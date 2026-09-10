@@ -1,15 +1,11 @@
 package com.example.genetiicz.Service;
 
-import com.example.genetiicz.DTO.LoginUserDTO;
-import com.example.genetiicz.DTO.ResetPasswordDTO;
-import com.example.genetiicz.DTO.UserDTO;
-import com.example.genetiicz.DTO.VerifyUserDto;
+import com.example.genetiicz.DTO.*;
 import com.example.genetiicz.Entity.UserEntity;
 import com.example.genetiicz.Enum.Role;
 import com.example.genetiicz.Repository.UserRepository;
 import jakarta.mail.AuthenticationFailedException;
 import jakarta.mail.MessagingException;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +13,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
@@ -274,13 +269,13 @@ public class AuthService {
     }
 
     //This method should be where this actually check for if the oneTimePassword is still available
-    public UserEntity checkOneTimePassword(UserDTO userDTO, String email) throws AccountNotFoundException {
+    public UserEntity checkOneTimePassword(OtpDTO otpDTO, String email) throws AccountNotFoundException {
 
         //I check if there are any user that is registered already with the current email
         Optional <UserEntity> userCheck = userRepository.findByEmail(email);
 
         //if the user is present
-        if(userCheck.isPresent() && userRepository.isEnabled(userDTO.getEmail())) {
+        if(userCheck.isPresent() && userRepository.isEnabled(otpDTO.getEmail())) {
             //I want to store this user in a new variable where I can check if this user has confirmed their verification already,
             //If not, the user should not get access to login.
             UserEntity userOtp = userCheck.get();
@@ -294,7 +289,7 @@ public class AuthService {
 
             //If the otp is not expired, I should check that the OtpCode that has been sent, is the otp code that is supposed to verify the user's login method.
             //so the other object i am comparing to should be equals in terms object similarity, since they are represented in Strings.
-            if(userOtp.getOtpCode().equals(userDTO.getOtpCode())) {
+            if(userOtp.getOtpCode().equals(otpDTO.getOtpCode())) {
                 userOtp.setEnabled(true);
                 userOtp.setOtpCode(null);
                 userOtp.setOtpExpiresAt(null);
@@ -309,7 +304,7 @@ public class AuthService {
             }
             // I think it is important to have an else if statement with an inverted logic to check if the user is not enabled by verification
             //so it throw an exception to AccessDenied
-        } else if (!userRepository.isEnabled(userDTO.getEmail())) {
+        } else if (!userRepository.isEnabled(otpDTO.getEmail())) {
             throw new AccessDeniedException("User is not verified - cannot log in with OTP!");
 
         } else { //I also want to throw an exception if the user does NOT EXIST AT ALL.

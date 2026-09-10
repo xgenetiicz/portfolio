@@ -42,6 +42,13 @@ public class ProjectController {
         // that the request is working as it should.
     }
 
+    @DeleteMapping("/delete/{projectId}")
+    public ResponseEntity<String>deleteProjectr(@PathVariable Long projectId) throws RoleNotFoundException {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        projectService.deleteProject(projectId,email);
+        return ResponseEntity.ok("Project deleted successfully");
+    }
+
     @GetMapping("/fetchProjects")
     //This is the first time I am implementing a @GetMapping,but I want to validate it with @RequestParam
     //because this pass the email as query parameter to a dedicated validation endpoint that queries with the database

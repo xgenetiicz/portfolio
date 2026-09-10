@@ -29,6 +29,10 @@ Check out [Docs](Docs), where this explains progress more in depth for each feat
 - POST /api/projects/addproject - admin only, create project
 - GET  /api/projects/fetchProjects - fetch all projects
 - POST /api/mail/contact - public, send a message through contact form.
+- POST /api/auth/forgot/password - request password reset code
+- POST /api/auth/reset/password - reset password with OTP code
+- POST /api/projects/upload/image/{projectId} - admin only, upload cover image
+- DELETE /api/projects/delete/{projectId} - admin only, delete project
 
 ## Projects
 The projects are shown in cards, and include information such as;

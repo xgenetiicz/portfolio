@@ -42,15 +42,6 @@ public class LoginController {
         }
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@Valid @RequestBody UserDTO userDTO, VerifyUserDto verifyUserDto) {
-        boolean registeredUser = authService.registerUser(userDTO,verifyUserDto);
-        if (registeredUser) {
-                return ResponseEntity.status(201).body("User Registered successfully"); //status ok!
-            } else {
-                return ResponseEntity.status(409).body("User already exists"); //status should be unauthorized that is 401 -- EDIT NO: THIS SHOULD BE A BAD REQUEST OR SOMETHING THAT EXPLICTLY THAT THIS REQUEST CANNOT BE DONE.
-        }
-    }
 
     @PostMapping("/login")
     public ResponseEntity<String> authenticate(@RequestBody LoginUserDTO loginUserDTO){
@@ -62,30 +53,10 @@ public class LoginController {
         }
     }
 
-    @PostMapping("/verify")
-    public ResponseEntity<?>checkVerification(@RequestBody VerifyUserDto verifyUserDto) {
-        try {
-            authService.checkVerification(verifyUserDto);
-            return ResponseEntity.status(201).body("Account verified successfully");
-        } catch (Exception exception) {
-            return ResponseEntity.badRequest().body(exception.getMessage());
-        }
-    }
-
-    /*
-    Her skal det Mappingen skje for å resende både verification email
-
-    men også en metode til for otp verification.
-
-    takk for meg! Har kommet faktisk så langt nå at jeg har sikkerheten veldig godt på plass, og nå kan jeg jobbe med frontenden å få dette visualisert
-    Ettersom alle endpoints er verifisert og satt frem trygt.
-     */
-
-
     //Need also a method for verifying OTP now.
     @PostMapping("/verify/otp")
-    public ResponseEntity<LoginResponseDTO>checkOneTimePassword(@RequestBody UserDTO userDTO) throws AccountNotFoundException {
-        UserEntity otpVerification = authService.checkOneTimePassword(userDTO, userDTO.getEmail());
+    public ResponseEntity<LoginResponseDTO>checkOneTimePassword(@RequestBody OtpDTO otpDTO) throws AccountNotFoundException {
+        UserEntity otpVerification = authService.checkOneTimePassword(otpDTO, otpDTO.getEmail());
         String jwtToken = jwtService.generateToken(otpVerification.getEmail()); //so the jwtToken reference variable shall have the value of the jwtService.generateToken method, wheren this has the otpVerification code and we fetch the email from it
         LoginResponseDTO loginResponseDTO = new LoginResponseDTO(jwtToken,jwtService.getExpirationTime());
         if (otpVerification.isEnabled()) {

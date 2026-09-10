@@ -5,6 +5,8 @@ import com.example.genetiicz.DTO.ProjectDTO;
 import com.example.genetiicz.Entity.ProjectEntity;
 import com.example.genetiicz.Entity.UserEntity;
 import com.example.genetiicz.Enum.Role;
+import com.example.genetiicz.Exceptions.NotAuthorizedException;
+import com.example.genetiicz.Exceptions.ProjectNotFoundException;
 import com.example.genetiicz.Repository.ProjectRepository;
 import com.example.genetiicz.Repository.UserRepository;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
@@ -76,6 +78,22 @@ public class ProjectService {
                     "Project: " + project.getProjectName() + "\n " + project.getProjectDescription() + "\n " + project.getProjectURL());
         } else {
             throw new RoleNotFoundException("There are no Roles fetched, but Admin should have been fetched for method addProject(ProjectDTO projectDTO)");
+        }
+    }
+
+    public void deleteProject(Long projectId,String email) {
+        Optional <ProjectEntity> project = projectRepository.findById(projectId);
+        Optional<UserEntity> seededAdmin = userRepository.findByRoleAndEmail(Role.ADMIN,email);
+
+        if(seededAdmin.isPresent()) {
+            if(project.isPresent()){
+                projectRepository.deleteById(projectId);
+            } else {
+                throw new ProjectNotFoundException("Project not found");
+            }
+        } else {
+            throw new NotAuthorizedException("Not authorized to do this request"); // This is actually useless- since securityconfig shouldn't let anyone pass through it
+            //because the api endpoints requests that this path is authenticated by Role.ADMIN where this is my email - but defense in depth. hehe
         }
     }
 
