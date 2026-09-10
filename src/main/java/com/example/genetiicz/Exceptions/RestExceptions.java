@@ -1,7 +1,6 @@
 package com.example.genetiicz.Exceptions;
 
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
-import org.apache.tomcat.util.http.fileupload.impl.FileUploadIOException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
-import java.rmi.server.RemoteRef;
+import javax.management.relation.RoleNotFoundException;
 
 @RestControllerAdvice
 public class RestExceptions  {
@@ -38,5 +37,14 @@ public class RestExceptions  {
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<String>notAuthenticated(AuthenticationException exception) {
         return ResponseEntity.status(401).body("You are not authenticated for this request");
+    }
+    @ExceptionHandler(ProjectNotFoundException.class)
+    public ResponseEntity<String> projectNotFound(ProjectNotFoundException exception) {
+        return ResponseEntity.status(404).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(NotAuthorizedException.class)
+    public ResponseEntity<String> notAuthorized(NotAuthorizedException exception) {
+        return ResponseEntity.status(401).body(exception.getMessage());
     }
 }

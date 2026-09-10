@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         //Making changes to add ADMIN VERIFICATION if it is present so just I can add projects
-                        .requestMatchers("/api/projects/addproject").hasAuthority(String.valueOf(Role.ADMIN))
+                        .requestMatchers("/api/projects/addproject","/api/projects/delete/**").hasAuthority(String.valueOf(Role.ADMIN))
                         .requestMatchers("/api/projects/upload/image/**").authenticated() // so this is for checking real http server with authenticated users
 
                         //Testing here for javacontact, but i think i will check this with authority as user have the role of user, where this is an authenticated user and not a bot spamming the email.
