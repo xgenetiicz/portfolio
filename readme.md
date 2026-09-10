@@ -1,13 +1,12 @@
-# gentirudi.buildhubs.net (my own portofolio page based on Buildhubs project)
+# gentirudi.buildhubs.net (my own portfolio page based on Buildhubs project)
 
 A personal portfolio platform built from scratch to showcase my projects and journey as a backend developer. The goal is simple: give visitors a clean, interactive way to explore what I have built, without having to dig through GitHub repositories.
-The interacting part should include having the possibility to comment on each project, and give stars,
-and also have the possibility to contact me through mail also by topic interests.
+The interacting part should include having the possibility to give stars and contact me through email by interest.
 
 ## **Changes from BuildHubs Project**
 - There are roles, but only the admin that is me will provide projects here.
 - The idea is to have the possibility to present myself - since the other project is very huge, and takes time.
-- Soon to be done, and a lot can be reused - that is why i have duplicated the project into this as `portofolio`.
+- Soon to be done, and a lot can be reused - that is why i have duplicated the project into this as `portfolio`.
 
 Thanks
 
@@ -18,22 +17,17 @@ other users to have access login to my private page!
 The backend is a RESTful API built with Java and Spring Boot, designed around security from the ground up. Authentication is handled with JSON Web Tokens (JWT) & OTP. 
 These keywords are features from BuildHubs - but these are also perfect to be reused and have been a great way of learning on how to implement security features with different roles.
 
-- users can register, verify their email with a one-time code. 
-- users can log in after validating otp token, and their email needs to be verified.
-- users gets issued a JWT token after successful validation on login with OTP.
-- Visitors can now reach out through a contact form. Messages are routed to either my personal email, or my business account inbox depending on the topic selected, using a reply to header, so I can respond directly to the sender.
-
 #### **BY FURTHER INTEREST ON IMPLEMENTATION:**
-Check out [Docs](Docs), where this explains progress more in depth for each feature.
+Check out [Docs](Docs), where this explains progress more in depth for each feature. (PS: This contains also documentation from `BuildHubs` project)
 
 ## API Endpoints
 
-- POST /api/auth/register - register new user
-- POST /api/auth/verify - verify email with code
+- POST /api/auth/register - register new user // **Removed**
+- POST /api/auth/verify - verify email with code // **Removed**
 - POST /api/auth/login - validate credentials, sends OTP
-- POST /api/auth/verify/otp - verify OTP, returns JWT
+- POST /api/auth/verify/otp - verify OTP, returns JWT 
 - POST /api/projects/addproject - admin only, create project
-- GET  /api/projects/fetchProjects - get all projects by user
+- GET  /api/projects/fetchProjects - fetch all projects
 - POST /api/mail/contact - public, send a message through contact form.
 
 ## Projects
