@@ -127,7 +127,7 @@ public class ProjectService {
         String filename = UUID.randomUUID() + "_" + imageUrlProject.getOriginalFilename();
 
         //Then i need to store those files physically
-        Path uploadPath = Paths.get("uploads/projects/");
+        Path uploadPath = Paths.get("uploads/projects/" + projectId +"/");
         try {
             Files.createDirectories(uploadPath); //making dir for the actualpath where the files should be copied too.
             Files.copy(imageUrlProject.getInputStream(),uploadPath.resolve(filename));
@@ -147,7 +147,7 @@ public class ProjectService {
             ProjectEntity project = placeImageOnProject.get();
             project.setImagePath("uploads/projects/" + filename); //filename contains UUID.randomUUID() + "_" imageUrlProject.getOriginalFileName
             projectRepository.save(project);
-            return "uploads/projects/" + filename;
+            return "uploads/projects/" + projectId + "/" + filename; //Now it should be uploaded on projectId
         }
         throw new FileUploadException("The desired image is not uploaded. Please try again");
     }

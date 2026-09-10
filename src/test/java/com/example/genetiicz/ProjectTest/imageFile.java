@@ -41,7 +41,7 @@ public class imageFile {
     void imageUpload_ShouldWork_WithProjectId() throws FileUploadException { //So i don't store userId since there is already annotated @ManyToOne
     // Arrange the test
         ProjectEntity projectImage = new ProjectEntity();
-        projectImage.setImagePath("uploads/projects/test-image.jpg"); //Just getting the actually image that is being set
+        projectImage.setImagePath("uploads/projects/123/test-image.jpg"); //Just getting the actually image that is being set
 
         //Need to mock a file now:
         MockMultipartFile mockFile = new MockMultipartFile(
@@ -59,7 +59,7 @@ public class imageFile {
         //So when the projectRepo finds it, we want to store the result in a String result = the actual service layer - business logic
 
         String result = projectService.uploadProjectImage(123L,1L,mockFile);
-        assertTrue(result.startsWith("uploads/projects"));
+        assertTrue(result.startsWith("uploads/projects/123"));
 
         System.out.println(result);
     }
