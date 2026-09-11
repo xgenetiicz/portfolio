@@ -2,11 +2,14 @@ package com.example.genetiicz.Service;
 
 
 import com.example.genetiicz.DTO.ProjectDTO;
+import com.example.genetiicz.Entity.ContentEntity;
 import com.example.genetiicz.Entity.ProjectEntity;
 import com.example.genetiicz.Entity.UserEntity;
+import com.example.genetiicz.Enum.ContentType;
 import com.example.genetiicz.Enum.Role;
 import com.example.genetiicz.Exceptions.NotAuthorizedException;
 import com.example.genetiicz.Exceptions.ProjectNotFoundException;
+import com.example.genetiicz.Repository.ContentRepository;
 import com.example.genetiicz.Repository.ProjectRepository;
 import com.example.genetiicz.Repository.UserRepository;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
@@ -21,6 +24,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +34,11 @@ public class ProjectService {
     private ProjectRepository projectRepository;
     private UserRepository userRepository;
     private MultipartFile imageUrlProject;
+    private ContentRepository contentRepository;
+
+    //THESE ARE FOR UPLOADS AND SHOULD BE STATIC THROUGHOUT THE CLASS
+    private static final long MAX_TOTAL_BYTES = 50L * 1024 * 1024; //equals 50MB.
+
 
     //Constructor example with autowired
 
@@ -38,9 +47,12 @@ public class ProjectService {
 
     //Constructor with this keyword
     //
-    public ProjectService(ProjectRepository projectRepository, UserRepository userRepository) {
+    public ProjectService(
+            ProjectRepository projectRepository, UserRepository userRepository,
+            ContentRepository contentRepository) {
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
+        this.contentRepository = contentRepository;
     }
 
     //I want to add method for actual setting values for Project with DTO.
@@ -168,5 +180,68 @@ public class ProjectService {
             return "uploads/projects/" + projectId + "/" + filename; //Now it should be uploaded on projectId
         }
         throw new FileUploadException("The desired image is not uploaded. Please try again");
+    }
+
+
+
+    public List<String> uploadFilesIntoProject(Long projectId, String email, List<MultipartFile> differentFiles) throws FileUploadException {
+        Optional <ProjectEntity> project = projectRepository.findById(projectId);
+        Optional<UserEntity> seededAdmin = userRepository.findByRoleAndEmail(Role.ADMIN,email);
+
+        if(seededAdmin.isEmpty()) {
+            throw new NotAuthorizedException("You are not Authorized to do this"); //Again defense in depth - there should be no one else logged into this than me
+        }
+
+        if (project.isEmpty()) {
+            throw new ProjectNotFoundException("Project not found");
+        }
+
+        //THIS REPRESENTS THE CURRENT PROJECT
+        ProjectEntity currentProject = project.get();
+
+        List<ContentEntity> existingContent = contentRepository.findAllByProjectEntity_ProjectId(projectId);
+        long currentTotalBytes = existingContent.stream().mapToLong(content-> content.getFileSize()).sum();
+
+        List<String>savedPaths = new ArrayList<>();
+
+        for (MultipartFile files : differentFiles) {
+            long newFileSize = files.getSize(); //for each differentfiles we store them into files, and then check the newFileSize and the currentTotalBytes
+
+            // MAX_TOTAL_BYTES IS A PRIVATE FINAL LONG THAT GOES THROUGH THE WHOLE METHOD
+            if(newFileSize + currentTotalBytes > MAX_TOTAL_BYTES) {
+                throw new FileUploadException("Upload would exceed the 50MB total limit for this project");
+            }
+
+            //This checks with the ContentEnum type list.
+            String mimeType = files.getContentType();
+            ContentType contentType = Arrays.stream(ContentType.values())
+                    .filter(ct -> ct.getMimeType().equals(mimeType)).findFirst()
+                    .orElseThrow(() -> new FileUploadException("Unsupported file type: " + mimeType));
+
+
+            //I am reusing the save path from method uploadProjectImage()
+            //So i generate first random unique filenames
+            String fileName = UUID.randomUUID() + "_" + files.getOriginalFilename();
+            //Creating a Path for storage and store this into uploadFiles
+            Path uploadFiles = Paths.get("/uploads/projects/" + projectId + "/content/");
+            try {
+                Files.createDirectories(uploadFiles); //making dir for the actual path where the files should be copied too.
+                Files.copy(files.getInputStream(),uploadFiles.resolve(fileName)); // the for enhanced of the elements are stored into **files**
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            //Creating the new instance of ContentEntity and saving the files
+            ContentEntity content = new ContentEntity();
+            content.setFilePath("uploads/projects/" + projectId + "/content/" + fileName);
+            content.setFileSize(newFileSize);
+            content.setContentType(contentType);
+            content.setProjectEntity(currentProject);
+            contentRepository.save(content);
+
+            currentTotalBytes = currentTotalBytes + newFileSize;
+            savedPaths.add(content.getFilePath());
+        }
+        return savedPaths;
     }
 }

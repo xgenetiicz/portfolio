@@ -75,4 +75,11 @@ public class ProjectController {
             String result = projectService.uploadProjectImage(projectId,userId,file);
             return ResponseEntity.status(201).body("Image uploaded successfully with filename: " + result);
     }
+
+    @PostMapping("upload/files/{projectId}")
+    public ResponseEntity<List<String>>uploadFilesIntoProject(@PathVariable Long projectId, @RequestParam("content")List<MultipartFile> differentFiles) throws FileUploadException {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<String> savedPaths = projectService.uploadFilesIntoProject(projectId,email,differentFiles);
+        return ResponseEntity.status(201).body(savedPaths);
+    }
 }

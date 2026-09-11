@@ -11,8 +11,8 @@ spring:
     import: optional:file:.env[.properties]
   servlet:
     multipart:
-      max-file-size: 5MB #I don't want photos bigger than 5MB
-      max-request-size: 5MB
+      max-file-size: 50MB #I don't want files bigger than 50MB, its no need to take it down to 10MB for each file - since i want the present each project fully.
+      max-request-size: 50MB
   mail:
     host: smtp.gmail.com
     port: 587

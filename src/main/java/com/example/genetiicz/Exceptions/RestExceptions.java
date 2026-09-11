@@ -15,7 +15,7 @@ public class RestExceptions  {
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<String>handleMaxFileLimit(MaxUploadSizeExceededException exception) {
-        return ResponseEntity.status(413).body("Maximum size exceeded. Maximum size allowed is 5MB, please try again");
+        return ResponseEntity.status(413).body("Maximum size exceeded. Maximum size allowed is 50MB, please try again");
     }
 
     @ExceptionHandler(FileUploadException.class)
