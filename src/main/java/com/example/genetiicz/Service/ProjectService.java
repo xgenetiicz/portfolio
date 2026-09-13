@@ -1,6 +1,7 @@
 package com.example.genetiicz.Service;
 
 
+import com.example.genetiicz.DTO.ContentDTO;
 import com.example.genetiicz.DTO.ProjectDTO;
 import com.example.genetiicz.Entity.ContentEntity;
 import com.example.genetiicz.Entity.ProjectEntity;
@@ -19,12 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.management.relation.RoleNotFoundException;
 import javax.security.auth.login.AccountNotFoundException;
-import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -243,5 +242,31 @@ public class ProjectService {
             savedPaths.add(content.getFilePath());
         }
         return savedPaths;
+    }
+
+    public List<ContentDTO> getContentForProject (Long projectId){
+        //Optional
+        Optional <ProjectEntity> project = projectRepository.findById(projectId);
+        if (project.isEmpty()) {
+            throw new ProjectNotFoundException("Project not found");
+        }
+
+        List <ContentEntity> existingContent = contentRepository.findAllByProjectEntity_ProjectId(projectId);
+
+        //we retrieve a list on the contentDTO store this in the heap memory with an reference object
+        // of contentDTOS with a new ArrayList. We want the list
+        List <ContentDTO> contentDTOS = new ArrayList<>();
+
+        for (ContentEntity content : existingContent) {
+            ContentDTO dtoForProject  = new ContentDTO();
+
+            dtoForProject.setContentId(content.getContentId());
+            dtoForProject.setFilePath(content.getFilePath());
+            dtoForProject.setFileSize(content.getFileSize());
+            dtoForProject.setContentType(content.getContentType());
+            contentDTOS.add(dtoForProject);
+        }
+
+        return contentDTOS;
     }
 }

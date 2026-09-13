@@ -1,9 +1,9 @@
 package com.example.genetiicz.Controller;
 
 
+import com.example.genetiicz.DTO.ContentDTO;
 import com.example.genetiicz.DTO.ProjectDTO;
 import com.example.genetiicz.Entity.UserEntity;
-import com.example.genetiicz.Exceptions.RestExceptions;
 import com.example.genetiicz.Repository.UserRepository;
 import com.example.genetiicz.Service.ProjectService;
 import jakarta.validation.Valid;
@@ -11,7 +11,6 @@ import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.management.relation.RoleNotFoundException;
@@ -81,5 +80,11 @@ public class ProjectController {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         List<String> savedPaths = projectService.uploadFilesIntoProject(projectId,email,differentFiles);
         return ResponseEntity.status(201).body(savedPaths);
+    }
+
+    @GetMapping("/content/{projectId}")
+    public ResponseEntity<List<ContentDTO>> getContentForProject(@PathVariable Long projectId) {
+        List<ContentDTO> content = projectService.getContentForProject(projectId);
+        return ResponseEntity.ok(content);
     }
 }

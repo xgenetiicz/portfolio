@@ -54,13 +54,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         //Making changes to add ADMIN VERIFICATION if it is present so just I can add projects
-                        .requestMatchers("/api/projects/addproject","/api/projects/delete/**").hasAuthority(String.valueOf(Role.ADMIN))
-                        .requestMatchers("/api/projects/upload/image/**").authenticated() // so this is for checking real http server with authenticated users
+                        .requestMatchers("/api/projects/addproject", "/api/projects/delete/**", "/api/projects/upload/files/**", "/api/projects/upload/image/**").hasAuthority(String.valueOf(Role.ADMIN))
+                       // .requestMatchers("/api/projects/upload/image/**").authenticated() // this project is no longer multi-users-authentication.
 
                         //Testing here for javacontact, but i think i will check this with authority as user have the role of user, where this is an authenticated user and not a bot spamming the email.
                         .requestMatchers("/api/mail/contact","/api/auth/forgot/password").permitAll()
                         //Adding permitall on requestmatch for ("/api/projects/fetchProjects") this is so all can view the projects - It should not have any auth on it.
                         .requestMatchers("/api/projects/fetchProjects").permitAll()
+                        //same here, there should be only to see the content provided to the project.
+                        .requestMatchers("/api/projects/content/{projectId}").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
