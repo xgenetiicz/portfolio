@@ -217,4 +217,35 @@ public class ContentService {
         }
         //don't return anything this is a void method
     }
+
+
+    //Method for deleting Image cover on project
+    public void deleteProjectImage(Long projectId, String email) {
+        Optional<UserEntity> seededAdmin = userRepository.findByRoleAndEmail(Role.ADMIN, email);
+        if (seededAdmin.isEmpty()) {
+            throw new NotAuthorizedException("Not authorized for this request");
+        }
+
+        Optional<ProjectEntity> project = projectRepository.findById(projectId);
+        if (project.isEmpty()) {
+            throw new ProjectNotFoundException("Project not found");
+        }
+
+        ProjectEntity currentProject = project.get();
+        String imagePath = currentProject.getImagePath();
+
+        if (imagePath == null) {
+            throw new ServerResourceException("This project has no image to delete");
+        }
+
+        Path filePath = Paths.get(imagePath);
+        try {
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        currentProject.setImagePath(null);
+        projectRepository.save(currentProject); //save the currentProject without imagePath after deletion.
+    }
 }
