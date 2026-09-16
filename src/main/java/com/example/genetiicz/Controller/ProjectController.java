@@ -1,17 +1,14 @@
 package com.example.genetiicz.Controller;
 
 
-import com.example.genetiicz.DTO.ContentDTO;
 import com.example.genetiicz.DTO.ProjectDTO;
-import com.example.genetiicz.Entity.UserEntity;
 import com.example.genetiicz.Repository.UserRepository;
 import com.example.genetiicz.Service.ProjectService;
 import jakarta.validation.Valid;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+
 
 import javax.management.relation.RoleNotFoundException;
 import javax.security.auth.login.AccountNotFoundException;
@@ -61,7 +58,7 @@ public class ProjectController {
         }
     }
 
-    @PostMapping("/upload/image/{projectId}")
+ /*   @PostMapping("/upload/image/{projectId}")
     public ResponseEntity<String> uploadProjectImage(@PathVariable Long projectId,@RequestParam("file") MultipartFile file) throws FileUploadException  {
         String email = SecurityContextHolder.getContext().getAuthentication().getName(); // we reuse the securitycontext since
         //only auth users can upload image to their projects.
@@ -93,5 +90,5 @@ public class ProjectController {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         projectService.deleteContent(projectId,contentId,email);
         return ResponseEntity.ok("Content deleted successfully");
-    }
+    } */
 }

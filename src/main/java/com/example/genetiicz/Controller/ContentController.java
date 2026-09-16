@@ -3,12 +3,8 @@ package com.example.genetiicz.Controller;
 
 import com.example.genetiicz.DTO.ContentDTO;
 import com.example.genetiicz.Entity.UserEntity;
-import com.example.genetiicz.Repository.ContentRepository;
-import com.example.genetiicz.Repository.ProjectRepository;
 import com.example.genetiicz.Repository.UserRepository;
 import com.example.genetiicz.Service.ContentService;
-import com.example.genetiicz.Service.ProjectService;
-import com.example.genetiicz.Service.UserService;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/projects")
+@RequestMapping("/api/content")
 public class ContentController {
 
     //private ProjectService projectService;
@@ -52,7 +48,7 @@ public class ContentController {
         return ResponseEntity.status(201).body(savedPaths);
     }
 
-    @GetMapping("/content/{projectId}")
+    @GetMapping("/project/{projectId}")
     public ResponseEntity<List<ContentDTO>> getContentForProject(@PathVariable Long projectId) {
         List<ContentDTO> content = contentService.getContentForProject(projectId);
         return ResponseEntity.ok(content);

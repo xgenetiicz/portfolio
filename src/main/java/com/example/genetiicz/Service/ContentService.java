@@ -28,7 +28,6 @@ public class ContentService {
 
     private ProjectRepository projectRepository;
     private UserRepository userRepository;
-    private MultipartFile imageUrlProject;
     private ContentRepository contentRepository;
 
     //THESE ARE FOR UPLOADS AND SHOULD BE STATIC THROUGHOUT THE CLASS
@@ -36,13 +35,11 @@ public class ContentService {
 
     public ContentService(ContentRepository contentRepository,
                           ProjectRepository projectRepository,
-                          UserRepository userRepository,
-                          MultipartFile imageUrlProject
+                          UserRepository userRepository
     ){
         this.contentRepository = contentRepository;
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
-        this.imageUrlProject = imageUrlProject;
     }
 
      /*
