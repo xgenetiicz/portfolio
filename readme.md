@@ -1,14 +1,12 @@
 # gentirudi.buildhubs.net (my own portfolio page based on Buildhubs project)
 
 A personal portfolio platform built from scratch to showcase my projects and journey as a backend developer. The goal is simple: give visitors a clean, interactive way to explore what I have built, without having to dig through GitHub repositories.
-The interacting part should include having the possibility to give stars and contact me through email by interest.
+The interacting part should include having the possibility to give stars(planned) and contact me through email by interest.
 
 ## **Changes from BuildHubs Project**
 - There are roles, but only the admin that is me will provide projects here.
 - The idea is to have the possibility to present myself - since the other project is very huge, and takes time.
 - Soon to be done, and a lot can be reused - that is why i have duplicated the project into this as `portfolio`.
-
-Thanks
 
 ## What I built so far
 All of these changes exists still in this new project - but i will remove that others can register and log in - since i don't want
@@ -24,6 +22,7 @@ Check out [Docs](Docs), where this explains progress more in depth for each feat
 
 - POST /api/auth/register - register new user // **Removed**
 - POST /api/auth/verify - verify email with code // **Removed**
+
 - POST /api/auth/login - validate credentials, sends OTP
 - POST /api/auth/verify/otp - verify OTP, returns JWT 
 - POST /api/projects/addproject - admin only, create project
@@ -31,8 +30,12 @@ Check out [Docs](Docs), where this explains progress more in depth for each feat
 - POST /api/mail/contact - public, send a message through contact form.
 - POST /api/auth/forgot/password - request password reset code
 - POST /api/auth/reset/password - reset password with OTP code
-- POST /api/projects/upload/image/{projectId} - admin only, upload cover image
 - DELETE /api/projects/delete/{projectId} - admin only, delete project
+- POST /api/content/upload/image/{projectId} - admin only, upload cover image
+- GET /api/content/project/{projectId} - fetch all content within the project
+- POST /api/content/upload/files/{projectId} - upload files/content to the assigned project
+- DELETE /api/content/delete/{projectId}/{contentId} - delete the selected content based on assigned project.
+- DELETE /api/content/delete/image/{projectId} - delete the cover image of the project.
 
 ## Projects
 The projects are shown in cards, and include information such as;
@@ -42,8 +45,8 @@ The projects are shown in cards, and include information such as;
 3. Date start and end
 4. URL for project (could be a repository, web-page or something else)
 5. Image that visualize the card (project)
+6. Attachments(Content) connected to their unique projects.
 
-Could be maybe something else in the future, but this is the plan for now.
 
 ## Tech Stack
 
@@ -57,11 +60,13 @@ Im going to use my own hardware, and use Caddy for reverse proxy and also run th
 - Java 21 
 - Spring Boot,Spring Security + JWT Token Auth
 - BCrypt password hashing
+- Multipart file
 - JavaMail (SMTP via Gmail)
 - Docker
 - PostgreSQL
 - Maven
 - Postman
+
 
 **Frontend (future)**
 - React + TypeScript
