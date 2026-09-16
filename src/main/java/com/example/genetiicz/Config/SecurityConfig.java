@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -55,7 +56,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         //Making changes to add ADMIN VERIFICATION if it is present so just I can add projects
                         .requestMatchers("/api/projects/addproject", "/api/projects/delete/**", "/api/content/upload/files/**",
-                                "/api/content/upload/image/**", "/api/content/delete/**")
+                                "/api/content/upload/image/**", "/api/content/delete/**", "api/projects/update/**")
                         .hasAuthority(String.valueOf(Role.ADMIN))
                        // .requestMatchers("/api/projects/upload/image/**").authenticated() // this project is no longer multi-users-authentication.
 
