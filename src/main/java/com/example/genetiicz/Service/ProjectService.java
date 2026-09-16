@@ -10,6 +10,7 @@ import com.example.genetiicz.Enum.ContentType;
 import com.example.genetiicz.Enum.Role;
 import com.example.genetiicz.Exceptions.NotAuthorizedException;
 import com.example.genetiicz.Exceptions.ProjectNotFoundException;
+import com.example.genetiicz.Exceptions.ServerResourceException;
 import com.example.genetiicz.Repository.ContentRepository;
 import com.example.genetiicz.Repository.ProjectRepository;
 import com.example.genetiicz.Repository.UserRepository;
@@ -222,7 +223,7 @@ public class ProjectService {
             //So i generate first random unique filenames
             String fileName = UUID.randomUUID() + "_" + files.getOriginalFilename();
             //Creating a Path for storage and store this into uploadFiles
-            Path uploadFiles = Paths.get("/uploads/projects/" + projectId + "/content/");
+            Path uploadFiles = Paths.get("uploads/projects/" + projectId + "/content/");
             try {
                 Files.createDirectories(uploadFiles); //making dir for the actual path where the files should be copied too.
                 Files.copy(files.getInputStream(),uploadFiles.resolve(fileName)); // the for enhanced of the elements are stored into **files**
@@ -243,7 +244,6 @@ public class ProjectService {
         }
         return savedPaths;
     }
-
     public List<ContentDTO> getContentForProject (Long projectId){
         //Optional
         Optional <ProjectEntity> project = projectRepository.findById(projectId);
@@ -268,5 +268,54 @@ public class ProjectService {
         }
 
         return contentDTOS;
+    }
+
+    //A Delete void method for deleting the specific content i want to delete. this should only be void but can return a mesasge to user such as
+    // "contentName + " deleted succesfully";
+
+    public void deleteContent(Long projectId,Long contentId,String email) {
+
+        /*
+        I needed to create the object project, and have a declarative method on findById(projectId).
+        The reason is i want to have a pointer on it if admin exists as it should do - it would grant the ability
+        to delete the content within the project by pointing it to contentId.
+
+        so if admin = true -> project = true -> deletebyId on contentId= true -- since ContentEntity has @ManyToOne
+        Join on column @JoinColum(name =  "project_id");
+         */
+
+        System.out.println("deleteContent() is being called on");
+
+        Optional<UserEntity> seededAdmin = userRepository.findByRoleAndEmail(Role.ADMIN,email);
+        Optional<ContentEntity>existingContent = contentRepository.findByContentIdAndProjectEntity_ProjectId(contentId,projectId);
+            if (seededAdmin.isPresent()) {
+
+                //Debugging
+                UserEntity admin = seededAdmin.get();
+                System.out.println(admin.getFirstName() + " " + admin.getLastName());
+
+                if( existingContent.isPresent()){
+                    List<ContentDTO> contentName = getContentForProject(projectId);
+                    //Debugging
+                    System.out.println(contentName + " " + "are available");
+
+                    //got help on this one - I need to also delete this on server level.
+                    ContentEntity contentOnServer = existingContent.get(); //so i store the object into contentOnServer
+
+                    Path filePath = Paths.get(contentOnServer.getFilePath()); //this will find the actual uri path on server lever
+                    //but also after the actual content that is referred to the projectId with their contentId.
+                    try{
+                        Files.deleteIfExists(filePath); //and then we try to delete the files with a inbuild class such as Files, with the method deleteIfExists(my actual file (filePath));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e.getMessage());
+                    }
+                    contentRepository.deleteById(contentId); //delete the specific content on the project
+                } else {
+                    throw new ServerResourceException("Check server: ");
+                }
+            } else {
+                throw new NotAuthorizedException("Not authorized for this requests "); // this should never appear, but we leave it here.
+            }
+            //don't return anything this is a void method
     }
 }
