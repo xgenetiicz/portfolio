@@ -3,7 +3,7 @@ package com.example.genetiicz.Entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -25,13 +25,12 @@ public class ProjectEntity {
     @Column(unique = true) //one url for one project, can have several also - but each url must be unique.
     private String projectURL;
 
+    @Column
+    private LocalDate startDate;
 
-    //TODO:Change of plans:
-    /*
-    Instead of storing these into multiPartFile with Storage and cloud solutions and etc,
-    instead i am going to use a String imagePath, where these photos will be stored into a folder
-    on my own raspberry pi, and these
-     */
+    @Column
+    private LocalDate endDate;
+
     @Column
     private String imagePath;
 
