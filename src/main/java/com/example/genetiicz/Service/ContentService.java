@@ -54,12 +54,13 @@ public class ContentService {
 
         //So i genereate first random unique filenames
         String filename = UUID.randomUUID() + "_" + imageUrlProject.getOriginalFilename();
+        String relativePath = "uploads/projects/" + projectId + "/cover/" + filename; // the photo shall be stored in dir "cover"
 
         //Then i need to store those files physically
-        Path uploadPath = Paths.get("uploads/projects/" + projectId +"/");
+        Path uploadPath = Paths.get("uploads/projects/" + projectId +"/cover/");
         try {
             Files.createDirectories(uploadPath); //making dir for the actualpath where the files should be copied too.
-            Files.copy(imageUrlProject.getInputStream(),uploadPath.resolve(filename));
+            Files.copy(imageUrlProject.getInputStream(),Paths.get(relativePath));
         } catch (IOException e) {
             throw new RuntimeException("Cannot copy files and store these into uploadPath",e);
         }
@@ -74,9 +75,9 @@ public class ContentService {
         System.out.println("projectId: " + projectId + "\nuserId: " + userId); // and the id of project and the user id pointed to projectId.
         if (placeImageOnProject.isPresent()) {
             ProjectEntity project = placeImageOnProject.get();
-            project.setImagePath("uploads/projects/" + filename); //filename contains UUID.randomUUID() + "_" imageUrlProject.getOriginalFileName
+            project.setImagePath(relativePath); //filename contains UUID.randomUUID() + "_" imageUrlProject.getOriginalFileName
             projectRepository.save(project);
-            return "uploads/projects/" + projectId + "/" + filename; //Now it should be uploaded on projectId
+            return  relativePath; // we save the dir here.
         }
         throw new FileUploadException("The desired image is not uploaded. Please try again");
     }
