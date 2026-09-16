@@ -1,6 +1,7 @@
 package com.example.genetiicz.Service;
 
 import com.example.genetiicz.DTO.ProjectDTO;
+import com.example.genetiicz.Entity.ContentEntity;
 import com.example.genetiicz.Entity.ProjectEntity;
 import com.example.genetiicz.Entity.UserEntity;
 import com.example.genetiicz.Enum.Role;
@@ -16,6 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.management.relation.RoleNotFoundException;
 import javax.security.auth.login.AccountNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -101,19 +106,40 @@ public class ProjectService {
     }
 
     public void deleteProject(Long projectId,String email) {
-        Optional <ProjectEntity> project = projectRepository.findById(projectId);
         Optional<UserEntity> seededAdmin = userRepository.findByRoleAndEmail(Role.ADMIN,email);
-
-        if(seededAdmin.isPresent()) {
-            if(project.isPresent()){
-                projectRepository.deleteById(projectId);
-            } else {
-                throw new ProjectNotFoundException("Project not found");
-            }
-        } else {
-            throw new NotAuthorizedException("Not authorized to do this request"); // This is actually useless- since securityconfig shouldn't let anyone pass through it
-            //because the api endpoints requests that this path is authenticated by Role.ADMIN where this is my email - but defense in depth. hehe
+        if(seededAdmin.isEmpty()) {
+            throw new NotAuthorizedException("Not Authorized to do this requests"); // i have been blind to this - it should be an exception for authentication and not authorization
         }
+
+        Optional <ProjectEntity> project = projectRepository.findById(projectId);
+        if(project.isEmpty()) {
+            throw new ProjectNotFoundException("Project not found");
+        }
+
+        ProjectEntity currentProject = project.get();
+
+        //delete ever content that is currently related to the currentProject. So we need to iterate over a list with a for enhanced loop of ContentEntity
+        List<ContentEntity> allContents =  contentRepository.findAllByProjectEntity_ProjectId(projectId);
+
+        for(ContentEntity content : allContents) {
+            Path contentPath = Paths.get(content.getFilePath());
+            try {
+                Files.deleteIfExists(contentPath);
+            } catch (IOException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
+        contentRepository.deleteAll(allContents);
+
+        if(currentProject.getImagePath() != null) {
+            Path coverPath = Paths.get(currentProject.getImagePath());
+            try {
+                Files.deleteIfExists(coverPath);
+            } catch (IOException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
+        projectRepository.deleteById(projectId);
     }
 
     //Now i want to fetch all projects for myself, so i can display this later in a frontend page.
