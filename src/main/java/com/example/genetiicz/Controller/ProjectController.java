@@ -42,7 +42,7 @@ public class ProjectController {
     }
 
     @DeleteMapping("/delete/{projectId}")
-    public ResponseEntity<String>deleteProjectr(@PathVariable Long projectId) throws RoleNotFoundException {
+    public ResponseEntity<String>deleteProject(@PathVariable Long projectId) throws RoleNotFoundException {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         projectService.deleteProject(projectId,email);
         return ResponseEntity.ok("Project deleted successfully");
@@ -86,5 +86,12 @@ public class ProjectController {
     public ResponseEntity<List<ContentDTO>> getContentForProject(@PathVariable Long projectId) {
         List<ContentDTO> content = projectService.getContentForProject(projectId);
         return ResponseEntity.ok(content);
+    }
+
+    @DeleteMapping("/delete/{projectId}/{contentId}")
+    public ResponseEntity<String>deleteContent(@PathVariable Long projectId, @PathVariable Long contentId) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        projectService.deleteContent(projectId,contentId,email);
+        return ResponseEntity.ok("Content deleted successfully");
     }
 }

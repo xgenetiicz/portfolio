@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ContentRepository extends JpaRepository<ContentEntity, Long> {
@@ -18,4 +19,7 @@ public interface ContentRepository extends JpaRepository<ContentEntity, Long> {
 
      */
     List<ContentEntity> findAllByProjectEntity_ProjectId(Long projectId);
+
+    //If not By - you will get an exception of findContentId as a field instead of ContentId
+    Optional<ContentEntity> findByContentIdAndProjectEntity_ProjectId(Long contentId, Long projectId);
 }

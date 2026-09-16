@@ -47,4 +47,9 @@ public class RestExceptions  {
     public ResponseEntity<String> notAuthorized(NotAuthorizedException exception) {
         return ResponseEntity.status(401).body(exception.getMessage());
     }
+
+    @ExceptionHandler(ServerResourceException.class)
+        public ResponseEntity<String> resourceNotDeleted(ServerResourceException exception) {
+        return ResponseEntity.status(500).body(exception.getMessage() + "Could not delete content/files on server level");
+    }
 }
