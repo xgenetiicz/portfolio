@@ -41,7 +41,7 @@ public class DataSeeder implements CommandLineRunner {
             admin.setUserCreated(LocalDateTime.now());
             userRepository.save(admin);
 
-            System.out.println("Registered Admin: " + admin.getFirstName() + admin.getLastName());
+            System.out.println("Registered Admin: " + admin.getFirstName() + " "+ admin.getLastName());
         }
     }
 }
