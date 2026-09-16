@@ -151,6 +151,9 @@ public class ProjectService {
      */
 
     //And i want return the object to the user.
+
+
+    /*
     public String uploadProjectImage(Long projectId,Long userId, MultipartFile imageUrlProject ) throws FileUploadException { //one image to each projectId
 
         //So i genereate first random unique filenames
@@ -170,6 +173,8 @@ public class ProjectService {
         it should add this to the project. So at the time the method addProject() is called, this method should also be called in
         when adding image file
          */
+
+    /*
         Optional<ProjectEntity> placeImageOnProject = projectRepository.findProjectByProjectIdAndUserEntity_UserId(projectId,userId);
         System.out.println("Project found: " + placeImageOnProject.isPresent()); //need to see if it finds the project
         System.out.println("projectId: " + projectId + "\nuserId: " + userId); // and the id of project and the user id pointed to projectId.
@@ -284,6 +289,7 @@ public class ProjectService {
         Join on column @JoinColum(name =  "project_id");
          */
 
+    /*
         System.out.println("deleteContent() is being called on");
 
         Optional<UserEntity> seededAdmin = userRepository.findByRoleAndEmail(Role.ADMIN,email);
@@ -317,5 +323,5 @@ public class ProjectService {
                 throw new NotAuthorizedException("Not authorized for this requests "); // this should never appear, but we leave it here.
             }
             //don't return anything this is a void method
-    }
+    } */
 }
