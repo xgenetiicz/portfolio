@@ -78,6 +78,28 @@ public class ProjectService {
         }
     }
 
+    public void updateProject(Long projectId, String email,ProjectDTO projectDTO) {
+
+        Optional<UserEntity> seededAdmin = userRepository.findByRoleAndEmail(Role.ADMIN,email);
+        if (seededAdmin.isEmpty()) {
+            throw new NotAuthorizedException("Not authenticated for this request");
+        }
+
+        Optional <ProjectEntity> project = projectRepository.findById(projectId);
+        if (project.isEmpty()) {
+            throw new ProjectNotFoundException("Project not found");
+        }
+
+        ProjectEntity updateProject = project.get();
+        updateProject.setProjectName(projectDTO.getProjectName());
+        updateProject.setProjectDescription(projectDTO.getProjectDescription());
+        updateProject.setProjectURL(projectDTO.getProjectURL());
+        updateProject.setStartDate(projectDTO.getStartDate());
+        updateProject.setEndDate(projectDTO.getEndDate());
+
+        projectRepository.save(updateProject);
+    }
+
     public void deleteProject(Long projectId,String email) {
         Optional <ProjectEntity> project = projectRepository.findById(projectId);
         Optional<UserEntity> seededAdmin = userRepository.findByRoleAndEmail(Role.ADMIN,email);
