@@ -1,30 +1,21 @@
 package com.example.genetiicz.Service;
 
-
-import com.example.genetiicz.DTO.ContentDTO;
 import com.example.genetiicz.DTO.ProjectDTO;
-import com.example.genetiicz.Entity.ContentEntity;
 import com.example.genetiicz.Entity.ProjectEntity;
 import com.example.genetiicz.Entity.UserEntity;
-import com.example.genetiicz.Enum.ContentType;
 import com.example.genetiicz.Enum.Role;
+
 import com.example.genetiicz.Exceptions.NotAuthorizedException;
 import com.example.genetiicz.Exceptions.ProjectNotFoundException;
-import com.example.genetiicz.Exceptions.ServerResourceException;
 import com.example.genetiicz.Repository.ContentRepository;
 import com.example.genetiicz.Repository.ProjectRepository;
 import com.example.genetiicz.Repository.UserRepository;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.management.relation.RoleNotFoundException;
 import javax.security.auth.login.AccountNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,14 +30,6 @@ public class ProjectService {
     //THESE ARE FOR UPLOADS AND SHOULD BE STATIC THROUGHOUT THE CLASS
     private static final long MAX_TOTAL_BYTES = 50L * 1024 * 1024; //equals 50MB.
 
-
-    //Constructor example with autowired
-
-    //@Autowired
-    //public ProjectService projectService;
-
-    //Constructor with this keyword
-    //
     public ProjectService(
             ProjectRepository projectRepository, UserRepository userRepository,
             ContentRepository contentRepository) {
@@ -80,6 +63,8 @@ public class ProjectService {
             project.setProjectName(projectDTO.getProjectName());
             project.setProjectDescription(projectDTO.getProjectDescription());
             project.setProjectURL(projectDTO.getProjectURL());
+            project.setStartDate(projectDTO.getStartDate());
+            project.setEndDate(projectDTO.getEndDate());
             project.setUserEntity(projectAdmin.get());
 
             // project.setProjectFile(projectDTO.getProjectFile());
@@ -91,6 +76,28 @@ public class ProjectService {
         } else {
             throw new RoleNotFoundException("There are no Roles fetched, but Admin should have been fetched for method addProject(ProjectDTO projectDTO)");
         }
+    }
+
+    public void updateProject(Long projectId, String email,ProjectDTO projectDTO) {
+
+        Optional<UserEntity> seededAdmin = userRepository.findByRoleAndEmail(Role.ADMIN,email);
+        if (seededAdmin.isEmpty()) {
+            throw new NotAuthorizedException("Not authenticated for this request");
+        }
+
+        Optional <ProjectEntity> project = projectRepository.findById(projectId);
+        if (project.isEmpty()) {
+            throw new ProjectNotFoundException("Project not found");
+        }
+
+        ProjectEntity updateProject = project.get();
+        updateProject.setProjectName(projectDTO.getProjectName());
+        updateProject.setProjectDescription(projectDTO.getProjectDescription());
+        updateProject.setProjectURL(projectDTO.getProjectURL());
+        updateProject.setStartDate(projectDTO.getStartDate());
+        updateProject.setEndDate(projectDTO.getEndDate());
+
+        projectRepository.save(updateProject);
     }
 
     public void deleteProject(Long projectId,String email) {

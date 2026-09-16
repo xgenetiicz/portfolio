@@ -58,37 +58,10 @@ public class ProjectController {
         }
     }
 
- /*   @PostMapping("/upload/image/{projectId}")
-    public ResponseEntity<String> uploadProjectImage(@PathVariable Long projectId,@RequestParam("file") MultipartFile file) throws FileUploadException  {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName(); // we reuse the securitycontext since
-        //only auth users can upload image to their projects.
-        UserEntity user = userRepository.findByEmail(email).get(); //so i fetch the user and find it by email where this checks for auth,
-
-        //and then store this in a Long datatype with the reference userId and point this to the fetched user.getUserId();
-        //userId has the actual userId, this could have been fixed in another way, maybe just pointing to the email instead, since it is unique
-        //and the email could have several projects, and the authenticationManager points to the email for auth credentials.
-        Long userId = user.getUserId();
-            String result = projectService.uploadProjectImage(projectId,userId,file);
-            return ResponseEntity.status(201).body("Image uploaded successfully with filename: " + result);
-    }
-
-    @PostMapping("upload/files/{projectId}")
-    public ResponseEntity<List<String>>uploadFilesIntoProject(@PathVariable Long projectId, @RequestParam("content")List<MultipartFile> differentFiles) throws FileUploadException {
+    @PutMapping("/update/{projectId}")
+    public ResponseEntity<String> updateProject(@PathVariable Long projectId, @Valid @RequestBody ProjectDTO projectDTO) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<String> savedPaths = projectService.uploadFilesIntoProject(projectId,email,differentFiles);
-        return ResponseEntity.status(201).body(savedPaths);
+        projectService.updateProject(projectId,email,projectDTO);
+        return ResponseEntity.ok("Project updated successfully");
     }
-
-    @GetMapping("/content/{projectId}")
-    public ResponseEntity<List<ContentDTO>> getContentForProject(@PathVariable Long projectId) {
-        List<ContentDTO> content = projectService.getContentForProject(projectId);
-        return ResponseEntity.ok(content);
-    }
-
-    @DeleteMapping("/delete/{projectId}/{contentId}")
-    public ResponseEntity<String>deleteContent(@PathVariable Long projectId, @PathVariable Long contentId) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        projectService.deleteContent(projectId,contentId,email);
-        return ResponseEntity.ok("Content deleted successfully");
-    } */
 }
