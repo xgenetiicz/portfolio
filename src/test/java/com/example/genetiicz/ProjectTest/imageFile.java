@@ -2,7 +2,7 @@ package com.example.genetiicz.ProjectTest;
 
 import com.example.genetiicz.Entity.ProjectEntity;
 import com.example.genetiicz.Repository.ProjectRepository;
-import com.example.genetiicz.Service.ProjectService;
+import com.example.genetiicz.Service.ContentService;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +28,8 @@ public class imageFile {
     //InjectMocks are where i inject all the mocks required for usage.
     //This is actually the constructor initializing the literal values
     @InjectMocks
-    private ProjectService projectService; //And the logic will go to projectService.
+    //private ProjectService projectService; //And the logic will go to projectService.
+    private ContentService contentService;
 
     /*
     So this test is going to be a TDD - Test Driven Development.
@@ -58,7 +59,7 @@ public class imageFile {
 
         //So when the projectRepo finds it, we want to store the result in a String result = the actual service layer - business logic
 
-        String result = projectService.uploadProjectImage(123L,1L,mockFile);
+        String result = contentService.uploadProjectImage(123L,1L,mockFile);
         assertTrue(result.startsWith("uploads/projects/123"));
 
         System.out.println(result);
