@@ -1,8 +1,11 @@
 package com.example.genetiicz.DTO;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -22,6 +25,14 @@ public class ProjectDTO {
     //
     @NotBlank(message = "*URL is required*")
     private String projectURL;
+
+    @NotNull(message = "*Date is required*")
+    private LocalDate startDate;
+
+    //No annotation - because a project could be also current project.
+    private LocalDate endDate;
+
+
 
     //This is for putting image to the project, so this will reveal as a background image
     //on the cards. The idea is to have projectCards that retrieves this image and set it on the
