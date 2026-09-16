@@ -60,4 +60,11 @@ public class ContentController {
         contentService.deleteContent(projectId,contentId,email);
         return ResponseEntity.ok("Content deleted successfully");
     }
+
+    @DeleteMapping("/delete/image/{projectId}")
+    public ResponseEntity<String> deleteProjectImage(@PathVariable Long projectId) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        contentService.deleteProjectImage(projectId, email);
+        return ResponseEntity.ok("Project image deleted successfully");
+    }
 }
