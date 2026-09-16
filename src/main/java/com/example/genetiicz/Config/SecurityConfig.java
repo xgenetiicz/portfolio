@@ -56,7 +56,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         //Making changes to add ADMIN VERIFICATION if it is present so just I can add projects
                         .requestMatchers("/api/projects/addproject", "/api/projects/delete/**", "/api/content/upload/files/**",
-                                "/api/content/upload/image/**", "/api/content/delete/**", "api/projects/update/**")
+                                "/api/content/upload/image/**", "/api/content/delete/**", "/api/projects/update/**")
                         .hasAuthority(String.valueOf(Role.ADMIN))
                        // .requestMatchers("/api/projects/upload/image/**").authenticated() // this project is no longer multi-users-authentication.
 
