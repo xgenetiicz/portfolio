@@ -1,11 +1,7 @@
-import './App.css'
+import HomePage from "./features/home/HomePage";
 
 function App() {
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <h1 className="text-3xl font-bold">Genti Rudi - Portfolio</h1>
-    </div>
-  )
+  return <HomePage />;
 }
 
-export default App
+export default App;
