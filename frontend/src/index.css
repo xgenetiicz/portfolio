@@ -1,40 +1,46 @@
 @import "tailwindcss";
 
 @theme {
-  --animate-typeWhoami: typeWhoami 9s steps(6, end);
-  --animate-cursorBlink: cursorBlink 0.9s steps(1, end);
-  --animate-fadeUpA: fadeUpA 9s ease;
-  --animate-fadeUpB: fadeUpB 9s ease;
-  --animate-fadeUpC: fadeUpC 9s ease;
-  --animate-tailFade: tailFade 9s ease;
+  --color-accent: #39ff9c;
+  --color-surface: #0b0f0d;
+}
+
+@theme {
+  --animate-typeWhoami: typeWhoami 1.2s steps(6, end) forwards;
+  --animate-cursorBlink: cursorBlink 0.9s steps(1, end) infinite;
+  --animate-fadeUpA: fadeUpA 1s ease forwards;
+  --animate-fadeUpB: fadeUpB 1s ease forwards;
+  --animate-fadeUpC: fadeUpC 1s ease forwards;
+  --animate-tailFade: tailFade 1s ease forwards;
+}
+
+.typed {
+  box-sizing: content-box;
+  animation: typeWhoami 1.2s steps(6, end) forwards,
+             cursorBlink 0.9s steps(1, end) infinite;
 }
 
 @keyframes typeWhoami {
-  0% { width: 0ch; }
-  18%, 92% { width: 6ch; }
-  96%, 100% { width: 0ch; }
+  0%   { width: 0ch; }
+  100% { width: 6ch; }
 }
 @keyframes cursorBlink {
-  0%, 50% { border-color: var(--accent); }
+  0%, 50%   { border-color: var(--color-accent); }
   51%, 100% { border-color: transparent; }
 }
 @keyframes fadeUpA {
-  0%, 22% { opacity: 0; transform: translateY(6px); }
-  28%, 90% { opacity: 1; transform: translateY(0); }
-  96%, 100% { opacity: 0; }
+  0%   { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 @keyframes fadeUpB {
-  0%, 32% { opacity: 0; transform: translateY(6px); }
-  38%, 90% { opacity: 1; transform: translateY(0); }
-  96%, 100% { opacity: 0; }
+  0%   { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 @keyframes fadeUpC {
-  0%, 42% { opacity: 0; transform: translateY(6px); }
-  48%, 90% { opacity: 1; transform: translateY(0); }
-  96%, 100% { opacity: 0; }
+  0%   { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 @keyframes tailFade {
-  0%, 56% { opacity: 0; }
-  60%, 90% { opacity: 1; }
-  96%, 100% { opacity: 0; }
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
 }

@@ -15,19 +15,31 @@ export default function TerminalIntro() {
           <div className="whitespace-nowrap overflow-hidden">
             <span className="text-[var(--accent)]">genti@buildhub</span>
             <span className="text-[#7d8f85]">:~$ </span>
-            <span className="inline-block overflow-hidden whitespace-nowrap w-0 align-bottom border-r-2 border-[var(--accent)] animate-typeWhoami [animation:typeWhoami_9s_steps(6,end)_infinite,cursorBlink_0.9s_steps(1,end)_infinite]">
+            <span className="typed inline-block overflow-hidden whitespace-nowrap w-0 align-bottom border-r-2 border-accent">
               whoami
             </span>
           </div>
-          <div className="opacity-0 translate-y-1.5 text-[var(--accent)] font-bold text-[17px] mt-3.5 animate-fadeUpA">
-            Heyooo! my name is Genti Rudi &
+          <div
+            className="opacity-0 translate-y-1.5 text-[var(--accent)] font-bold text-[15px] mt-3.5 animate-fadeUpA"
+            style={{ animationDelay: "1.3s" }}
+          >
+            Heyooo! my name is Genti Rudi and welcome to my portfolio. :D
           </div>
-          <div className="opacity-0 translate-y-1.5 text-[#9fb3a8] animate-fadeUpB">
+          <div
+            className="opacity-0 translate-y-1.5 text-[#d7e6dd] animate-fadeUpB"
+            style={{ animationDelay: "2.5s" }}
+          >
             Java Developer with strong focus on Spring Framework.
           </div>
-          <div className="opacity-0 translate-y-1.5 text-[#d7e6dd] animate-fadeUpC">
+          <div
+            className="opacity-0 translate-y-1.5 text-[#d7e6dd] animate-fadeUpC"
+            style={{ animationDelay: "2.5s" }}
+          >
             Enjoy your ride through my portfolio page!
-            <span className="inline-block w-2 h-[15px] bg-[var(--accent)] ml-1 align-middle opacity-0 animate-tailFade"></span>
+            <span
+              className="inline-block w-2 h-[15px] bg-[var(--accent)] ml-1 align-middle opacity-0 animate-tailFade"
+              style={{ animationDelay: "2.2s" }}
+            ></span>
           </div>
         </div>
       </div>
