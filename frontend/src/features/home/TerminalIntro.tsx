@@ -4,7 +4,7 @@ export default function TerminalIntro() {
       className="w-full min-h-[60vh] flex items-center justify-center bg-[#05070a] font-mono"
       style={{ backgroundImage: "radial-gradient(circle at 50% 30%, #0c1210 0%, #05070a 70%)" }}
     >
-      <div className="w-[min(90vw,380px)] bg-[#0b0f0d] border border-[#1c2620] rounded-xl overflow-hidden shadow-2xl">
+      <div className="w-[min(100vw,600px)] bg-[#0b0f0d] border border-[#1c2620] rounded-xl overflow-hidden shadow-2xl">
         <div className="h-[34px] bg-[#101512] flex items-center gap-2 px-3.5 border-b border-[#1c2620]">
           <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]"></span>
           <span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]"></span>

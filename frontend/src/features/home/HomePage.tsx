@@ -21,11 +21,19 @@ export default function HomePage() {
   return (
     <main>
       <TerminalIntro />
-      <section className="project-grid">
-        {isLoading && <p>Laster prosjekter…</p>}
-        {!isLoading && projects.length === 0 && <p>Ingen prosjekter enda.</p>}
-        {projects.map(function renderProject(project) {
-          return <ProjectCard key={project.projectId} project={project} />;
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-4 py-10">
+        {isLoading && <p className="text-[#9fb3a8]">Laster prosjekter…</p>}
+        {!isLoading && projects.length === 0 && (
+          <p className="text-[#9fb3a8]">Ingen prosjekter enda.</p>
+        )}
+        {projects.map(function renderProject(project, index) {
+          return (
+            <ProjectCard
+              key={project.projectId}
+              project={project}
+              isFeatured={index < 3}
+            />
+          );
         })}
       </section>
     </main>
