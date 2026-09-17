@@ -1,8 +1,17 @@
 @import "tailwindcss";
 
+ body {
+    background-color: var(--color-bg);
+    margin: 0;
+}
+
 @theme {
-  --color-accent: #39ff9c;
-  --color-surface: #0b0f0d;
+    --color-bg: #05070a;       /* selve sidebakgrunnen */
+    --color-surface: #0b0f0d;  /* kort, navbar, terminal-vindu */
+    --color-line: #1c2620;     /* borders overalt */
+    --color-text: #d7e6dd;     /* primær tekst */
+    --color-muted: #9fb3a8;    /* sekundær/dempet tekst */
+    --color-accent: #39ff9c;   /* brand-farge, knapper, lenker */
 }
 
 @theme {
