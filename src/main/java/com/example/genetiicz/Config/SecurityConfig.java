@@ -66,6 +66,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/projects/fetchProjects").permitAll()
                         //same here, there should be only to see the content provided to the project.
                         .requestMatchers("/api/content/project/{projectId}").permitAll()
+                        //for serving content
+                        .requestMatchers("/uploads/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
