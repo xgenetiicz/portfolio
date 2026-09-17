@@ -15,6 +15,8 @@ public class ProjectDTO {
     //DTO holder datafields, og vi ønsker å ha:
     // projectName, projectDescription osv.
 
+    private Long projectId;
+
     @NotBlank(message = "*Project Name/Title is required*")
     private String projectName; //Title
 
@@ -31,6 +33,8 @@ public class ProjectDTO {
 
     //No annotation - because a project could be also current project.
     private LocalDate endDate;
+
+    private String imagePath;
 
 
 
