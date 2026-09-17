@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,6 +36,9 @@ public class ProjectDTO {
     private LocalDate endDate;
 
     private String imagePath;
+
+    //List for retrieving all contents within the project.
+    private List<ContentDTO> content;
 
 
 
