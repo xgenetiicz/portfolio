@@ -52,4 +52,9 @@ public class RestExceptions  {
         public ResponseEntity<String> resourceNotDeleted(ServerResourceException exception) {
         return ResponseEntity.status(500).body(exception.getMessage() + "Could not delete content/files on server level");
     }
+
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ResponseEntity<String> roleNotFound(RoleNotFoundException exception) {
+        return ResponseEntity.status(500).body(exception.getMessage());
+    }
 }
