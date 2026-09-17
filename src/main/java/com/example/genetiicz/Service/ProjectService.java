@@ -1,5 +1,6 @@
 package com.example.genetiicz.Service;
 
+import com.example.genetiicz.DTO.ContentDTO;
 import com.example.genetiicz.DTO.ProjectDTO;
 import com.example.genetiicz.Entity.ContentEntity;
 import com.example.genetiicz.Entity.ProjectEntity;
@@ -16,14 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.management.relation.RoleNotFoundException;
-import javax.security.auth.login.AccountNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
@@ -143,36 +142,46 @@ public class ProjectService {
     }
 
     //Now i want to fetch all projects for myself, so i can display this later in a frontend page.
-    public List<ProjectDTO> getAllProjects(String userName) throws AccountNotFoundException {
+    public List<ProjectDTO> getAllProjects() {
 
-        //New Instance of list where we call on the repository to make the declarative query with JPA on userName instead.
-        List <ProjectEntity> getUserNameProjects = projectRepository.findAllByUserEntity_UserName(userName);
 
-        //List<ProjectEntity> projectEntity = projectRepository.findAllByUserEntity_Email(email);
+        //JPA query the whole lists
+        List <ProjectEntity> adminProjects = projectRepository.findAll();
+        List <ContentEntity> allContents = contentRepository.findAll();
 
-        //I want to actually have this statement check with an inverted logic, if projectEntity is not Empty,
-        //I want then to stream and map all the objects and place them In a new list with collection.
-        if(!getUserNameProjects.isEmpty()) {
-            return getUserNameProjects.stream().map(
-                            project -> {
-                                ProjectDTO projectDTO = new ProjectDTO();
-                                projectDTO.setProjectName(project.getProjectName());
-                                projectDTO.setProjectDescription(project.getProjectDescription());
-                                projectDTO.setProjectURL(project.getProjectURL());
-                                return projectDTO;
-                            }).collect(Collectors.toList());
+        List <ProjectDTO> listOfProjects = new ArrayList<>();
+        for (ProjectEntity projects : adminProjects) {
+
+            ProjectDTO projectDTO = new ProjectDTO();
+            //crucial: projectId must be retrieved, if not content will never know which project it is referred to.
+            projectDTO.setProjectId(projects.getProjectId());
+            projectDTO.setProjectName(projects.getProjectName());
+            projectDTO.setProjectDescription(projects.getProjectDescription());
+            projectDTO.setProjectURL(projects.getProjectURL());
+            projectDTO.setStartDate(projects.getStartDate());
+            projectDTO.setEndDate(projects.getEndDate());
+            projectDTO.setImagePath(projects.getImagePath());
+
+            // i need a inner loop to match all contents provided related to project.
+            //Found this out by testing and verifying that the content are not shown in JSON body fields
+
+            List <ContentDTO> matchedContent = new ArrayList<>();
+            for (ContentEntity content : allContents) {
+                ContentDTO contentDTO = new ContentDTO();
+
+                //i need to cross check that contents are pointed to projectid
+                if(content.getProjectEntity().getProjectId().equals(projects.getProjectId())) {
+                    contentDTO.setContentId(content.getContentId());
+                    contentDTO.setFilePath(content.getFilePath());
+                    contentDTO.setFileSize(content.getFileSize());
+                    contentDTO.setContentType(content.getContentType());
+                    matchedContent.add(contentDTO); // we add the contents to the projectId
+                }
+            }
+            projectDTO.setContent(matchedContent);//arraylist for matchedContents and we set the values of all contents referred to their each project.
+            listOfProjects.add(projectDTO);//arraylist object stored with all the elements
         }
-        //I need to also check if the project list is actually empty, and i will check this by username instead since I don't compromize any email data.
-        boolean accountExists = userRepository.existsByUsername(userName);
-
-        //then I want to throw the Exception State.
-        if(!accountExists){
-            throw new AccountNotFoundException("Did not find associated account for the projects.");
-            //else this user doesn't have any projects associated with the account
-        } else {
-            System.out.println("User has no projects available with the associated account");
-            //and the returned value of the else statement should include the Collection of the empty list.
-            return Collections.emptyList();
-        }
+        //Return the created list of the new Arraylist that stores all of these fields in the object.
+        return listOfProjects;
     }
 }

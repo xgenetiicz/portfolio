@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,6 +15,8 @@ public class ProjectDTO {
 
     //DTO holder datafields, og vi ønsker å ha:
     // projectName, projectDescription osv.
+
+    private Long projectId;
 
     @NotBlank(message = "*Project Name/Title is required*")
     private String projectName; //Title
@@ -31,6 +34,11 @@ public class ProjectDTO {
 
     //No annotation - because a project could be also current project.
     private LocalDate endDate;
+
+    private String imagePath;
+
+    //List for retrieving all contents within the project.
+    private List<ContentDTO> content;
 
 
 
