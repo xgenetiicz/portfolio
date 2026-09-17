@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --animate-typeWhoami: typeWhoami 9s steps(6, end) infinite;
-  --animate-cursorBlink: cursorBlink 0.9s steps(1, end) infinite;
-  --animate-fadeUpA: fadeUpA 9s ease infinite;
-  --animate-fadeUpB: fadeUpB 9s ease infinite;
-  --animate-fadeUpC: fadeUpC 9s ease infinite;
-  --animate-tailFade: tailFade 9s ease infinite;
+  --animate-typeWhoami: typeWhoami 9s steps(6, end);
+  --animate-cursorBlink: cursorBlink 0.9s steps(1, end);
+  --animate-fadeUpA: fadeUpA 9s ease;
+  --animate-fadeUpB: fadeUpB 9s ease;
+  --animate-fadeUpC: fadeUpC 9s ease;
+  --animate-tailFade: tailFade 9s ease;
 }
 
 @keyframes typeWhoami {
