@@ -1,3 +1,4 @@
+import AboutSection from "./AboutSection";
 import { useEffect, useState } from "react";
 import TerminalIntro from "./TerminalIntro";
 import ProjectCard from "../projects/ProjectCard";
@@ -21,6 +22,7 @@ export default function HomePage() {
   return (
     <main>
       <TerminalIntro />
+      <AboutSection />
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-4 py-10">
         {isLoading && <p className="text-[#9fb3a8]">Laster prosjekter…</p>}
         {!isLoading && projects.length === 0 && (
