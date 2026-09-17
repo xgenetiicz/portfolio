@@ -1,1 +1,40 @@
 @import "tailwindcss";
+
+@theme {
+  --animate-typeWhoami: typeWhoami 9s steps(6, end) infinite;
+  --animate-cursorBlink: cursorBlink 0.9s steps(1, end) infinite;
+  --animate-fadeUpA: fadeUpA 9s ease infinite;
+  --animate-fadeUpB: fadeUpB 9s ease infinite;
+  --animate-fadeUpC: fadeUpC 9s ease infinite;
+  --animate-tailFade: tailFade 9s ease infinite;
+}
+
+@keyframes typeWhoami {
+  0% { width: 0ch; }
+  18%, 92% { width: 6ch; }
+  96%, 100% { width: 0ch; }
+}
+@keyframes cursorBlink {
+  0%, 50% { border-color: var(--accent); }
+  51%, 100% { border-color: transparent; }
+}
+@keyframes fadeUpA {
+  0%, 22% { opacity: 0; transform: translateY(6px); }
+  28%, 90% { opacity: 1; transform: translateY(0); }
+  96%, 100% { opacity: 0; }
+}
+@keyframes fadeUpB {
+  0%, 32% { opacity: 0; transform: translateY(6px); }
+  38%, 90% { opacity: 1; transform: translateY(0); }
+  96%, 100% { opacity: 0; }
+}
+@keyframes fadeUpC {
+  0%, 42% { opacity: 0; transform: translateY(6px); }
+  48%, 90% { opacity: 1; transform: translateY(0); }
+  96%, 100% { opacity: 0; }
+}
+@keyframes tailFade {
+  0%, 56% { opacity: 0; }
+  60%, 90% { opacity: 1; }
+  96%, 100% { opacity: 0; }
+}
