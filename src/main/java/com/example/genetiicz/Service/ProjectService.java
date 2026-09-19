@@ -61,14 +61,17 @@ public class ProjectService {
         Optional <UserEntity> projectAdmin = userRepository.findByRoleAndEmail(Role.ADMIN,email);
 
         if (!projectAdmin.isPresent()) { // i think the best way is an boolean to check if the presence is there so i can then map the project to the admin
-            throw new RuntimeException("*There is no ADMIN present at all*" + userRepository.findByRoleAndEmail(Role.USERS, email));
+            throw new RoleNotFoundException("No Admin here");
         } else if(userRepository.existsByRole(Role.ADMIN)) {
             //these are the values that will be stored in the object.
+            project.setImagePath(projectDTO.getImagePath()); // I Need to store the the image path now to the project.
             project.setProjectName(projectDTO.getProjectName());
             project.setProjectDescription(projectDTO.getProjectDescription());
+            project.setKeywords(projectDTO.getKeywords()); //keywords will appear right after description
             project.setProjectURL(projectDTO.getProjectURL());
             project.setStartDate(projectDTO.getStartDate());
             project.setEndDate(projectDTO.getEndDate());
+            project.setActive(projectDTO.isActive()); // set the status of the project.
             project.setUserEntity(projectAdmin.get());
 
             // project.setProjectFile(projectDTO.getProjectFile());
@@ -78,7 +81,7 @@ public class ProjectService {
             System.out.print("Admin added: "  + projectAdmin.get().getFirstName() + " " + projectAdmin.get().getLastName() + "\n" +
                     "Project: " + project.getProjectName() + "\n " + project.getProjectDescription() + "\n " + project.getProjectURL());
         } else {
-            throw new RoleNotFoundException("There are no Roles fetched, but Admin should have been fetched for method addProject(ProjectDTO projectDTO)");
+            throw new NotAuthorizedException("Not Authorized/Authenticated for this request");
         }
     }
 
@@ -95,13 +98,16 @@ public class ProjectService {
         }
 
         ProjectEntity updateProject = project.get();
+        updateProject.setImagePath(projectDTO.getImagePath()); // the imageCover photo
         updateProject.setProjectName(projectDTO.getProjectName());
         updateProject.setProjectDescription(projectDTO.getProjectDescription());
+        updateProject.setKeywords(projectDTO.getKeywords()); //set values for keywords and retrieve.
         updateProject.setProjectURL(projectDTO.getProjectURL());
         updateProject.setStartDate(projectDTO.getStartDate());
         updateProject.setEndDate(projectDTO.getEndDate());
+        updateProject.setActive(projectDTO.isActive());
 
-        projectRepository.save(updateProject);
+        projectRepository.save(updateProject); // update the project and save it to entity
     }
 
     public void deleteProject(Long projectId,String email) {
