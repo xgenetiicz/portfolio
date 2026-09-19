@@ -20,6 +20,8 @@ export interface ProjectDTO {
   projectId: number;
   projectName: string;
   projectDescription: string;
+  keywords: string[];
+  isActive: boolean;
   projectURL: string;
   startDate: string;
   endDate: string | null;
