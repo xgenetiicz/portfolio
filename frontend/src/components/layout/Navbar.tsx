@@ -41,9 +41,9 @@ export default function Navbar() {
           <NavLink to="/" end className={navLinkClasses}>
             Home
           </NavLink>
-          <a href="#projects" className="py-1.5 text-sm font-medium text-muted transition-colors hover:text-text">
-            Projects
-          </a>
+         <NavLink to="/projects" className={navLinkClasses}>
+           Projects
+         </NavLink>
           <NavLink to="/contact" className={navLinkClasses}>
             Contact
           </NavLink>
@@ -102,9 +102,9 @@ export default function Navbar() {
         <NavLink to="/" end onClick={closeMenu} className={mobileNavLinkClasses}>
           Home
         </NavLink>
-        <a href="#projects" onClick={closeMenu} className={mobileLinkClasses}>
+        <NavLink to="/projects" onClick={closeMenu} className={mobileNavLinkClasses}>
           Projects
-        </a>
+        </NavLink>
         <NavLink to="/contact" onClick={closeMenu} className={mobileNavLinkClasses}>
           Contact
         </NavLink>
