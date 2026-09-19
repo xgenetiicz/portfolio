@@ -1,5 +1,6 @@
 package com.example.genetiicz.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -40,7 +41,7 @@ public class ProjectDTO {
     //List for retrieving all contents within the project.
     private List<ContentDTO> content;
 
-
+    @JsonProperty("isActive")
     private boolean isActive; //It should be false by standard.
 
     //it should fetch the keywords referred to the projectId-or put them there.
