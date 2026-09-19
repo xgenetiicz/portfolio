@@ -3,6 +3,7 @@ import type { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { login, verifyOtp } from "./api";
+import { useAuth } from "./AuthContext";
 import CredentialsForm from "./CredentialsForm";
 import OtpForm from "./OtpForm";
 
@@ -24,6 +25,7 @@ function extractErrorMessage(error: unknown, fallback: string): string {
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { login: setAuthenticated } = useAuth();
 
   const [step, setStep] = useState<"credentials" | "otp">("credentials");
   const [email, setEmail] = useState("");
@@ -65,10 +67,8 @@ export default function LoginPage() {
     setIsSubmitting(true);
     try {
       const loginResponse = await verifyOtp({ email, otpCode });
-      // TODO: replace with a proper auth context once we build auth-state
-      // management + ProtectedRoute; for now the token just goes to storage.
-      localStorage.setItem("buildhub_token", loginResponse.token);
-      navigate("/");
+      setAuthenticated(loginResponse.token);
+      navigate("/admin");
     } catch (verifyError) {
       setError(extractErrorMessage(verifyError, "Invalid or expired code."));
     } finally {
