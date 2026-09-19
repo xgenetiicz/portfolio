@@ -37,7 +37,7 @@ export default function Navbar() {
             Home
           </NavLink>
 
-            href="#projects"
+           <a href="#projects"
             className="py-1.5 text-sm font-medium text-muted transition-colors hover:text-text"
           >
             Projects
