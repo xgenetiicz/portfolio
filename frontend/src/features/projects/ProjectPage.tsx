@@ -3,6 +3,8 @@ import ProjectCard from "./ProjectCard";
 import AddProjectModal from "./AddProjectModal";
 import { getProjects, deleteProject } from "./api";
 import type { ProjectDTO } from "./types";
+import Button from "../../components/Button";
+import FabButton from "../../components/FabButton";
 import { useAuth } from "../auth/AuthContext";
 
 export default function ProjectsPage() {
@@ -20,7 +22,7 @@ export default function ProjectsPage() {
         setProjects(fetchedProjects);
       })
       .catch(function handleError() {
-        setError("Kunne ikke laste prosjekter.");
+        setError("Could not load projects - could be empty.");
       })
       .finally(function stopLoading() {
         setIsLoading(false);
@@ -30,7 +32,7 @@ export default function ProjectsPage() {
   useEffect(loadProjects, []);
 
   async function handleDelete(projectId: number) {
-    const confirmed = window.confirm("Slette dette prosjektet? Dette kan ikke angres.");
+    const confirmed = window.confirm("Are you sure that you want to delete this project?.");
     if (!confirmed) return;
 
     try {
@@ -50,22 +52,18 @@ export default function ProjectsPage() {
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-text">Projects</h1>
         {isAuthenticated && (
-          <button
-            type="button"
-            onClick={() => setIsAddModalOpen(true)}
-            className="rounded-lg border border-accent px-4 py-2 text-sm font-bold text-accent transition-colors hover:bg-accent hover:text-bg"
-          >
-            + Create Project
-          </button>
+          <FabButton onClick={() => setIsAddModalOpen(true)} aria-label="Create project">
+            +
+          </FabButton>
         )}
       </div>
 
       {error && <p className="mb-4 text-sm text-red-400">{error}</p>}
 
       <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {isLoading && <p className="text-muted">Laster prosjekter…</p>}
+        {isLoading && <p className="text-muted"></p>}
         {!isLoading && projects.length === 0 && (
-          <p className="text-muted">Ingen prosjekter enda.</p>
+          <p className="text-muted">No projects yet</p>
         )}
         {projects.map(function renderProject(project, index) {
           return (
