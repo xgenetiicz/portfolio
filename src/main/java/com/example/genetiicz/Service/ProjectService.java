@@ -64,7 +64,6 @@ public class ProjectService {
             throw new RoleNotFoundException("No Admin here");
             }
             //these are the values that will be stored in the object.
-            project.setImagePath(projectDTO.getImagePath()); // I Need to store the the image path now to the project.
             project.setProjectName(projectDTO.getProjectName());
             project.setProjectDescription(projectDTO.getProjectDescription());
             project.setKeywords(projectDTO.getKeywords()); //keywords will appear right after description
