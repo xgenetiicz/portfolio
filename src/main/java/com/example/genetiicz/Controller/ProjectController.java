@@ -26,16 +26,11 @@ public class ProjectController {
         //and then post this to the database through method on ProjectService.
         this.userRepository = userRepository; // this is added since i am referring to userId and i need to have it on my controller post endpoint
     }
-
-    //We use http body param objekt to pass the object and then set values.
     @PostMapping("/addproject")
-    public ResponseEntity <String> addProject(@Valid @RequestBody ProjectDTO projectDTO) throws RoleNotFoundException { //im checking the addproject now with ExceptiononRole
-        String email = SecurityContextHolder.getContext().getAuthentication().getName(); //by SecurityContextHolder, i get the context and also the authentication by Name, that holds the parameter and value as email.
-        projectService.addProject(projectDTO,email);
-
-        //We return to know if the method is successfully.
-        return ResponseEntity.status(201).body("Project added successfully and also added\nProject: " + projectDTO.getProjectName()); //reveals project added on Postman. This is just an confirmation
-        // that the request is working as it should.
+    public ResponseEntity<Long> addProject(@Valid @RequestBody ProjectDTO projectDTO) throws RoleNotFoundException {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Long newProjectId = projectService.addProject(projectDTO, email);
+        return ResponseEntity.status(201).body(newProjectId);
     }
 
     @DeleteMapping("/delete/{projectId}")

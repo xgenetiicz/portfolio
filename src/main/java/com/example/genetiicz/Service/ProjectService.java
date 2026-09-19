@@ -44,7 +44,7 @@ public class ProjectService {
 
     //I want to add method for actual setting values for Project with DTO.
 
-    public void addProject(ProjectDTO projectDTO, String email) throws RoleNotFoundException {
+    public Long addProject(ProjectDTO projectDTO, String email) throws RoleNotFoundException {
         //Want to print first how the user can actually add - for later implementation
         System.out.println("Click on '+ Add Project'\n So you can add the desired project!");
         //there is a generatedValue so we don't need to set the id for the project
@@ -62,7 +62,7 @@ public class ProjectService {
 
         if (!projectAdmin.isPresent()) { // i think the best way is an boolean to check if the presence is there so i can then map the project to the admin
             throw new RoleNotFoundException("No Admin here");
-        } else if(userRepository.existsByRole(Role.ADMIN)) {
+            }
             //these are the values that will be stored in the object.
             project.setImagePath(projectDTO.getImagePath()); // I Need to store the the image path now to the project.
             project.setProjectName(projectDTO.getProjectName());
@@ -77,12 +77,11 @@ public class ProjectService {
             // project.setProjectFile(projectDTO.getProjectFile());
 
             //Save the current project made based on the boolean object reference that checks so we can set values.
-            projectRepository.save(project);
+            ProjectEntity savedProject = projectRepository.save(project);
             System.out.print("Admin added: "  + projectAdmin.get().getFirstName() + " " + projectAdmin.get().getLastName() + "\n" +
                     "Project: " + project.getProjectName() + "\n " + project.getProjectDescription() + "\n " + project.getProjectURL());
-        } else {
-            throw new NotAuthorizedException("Not Authorized/Authenticated for this request");
-        }
+
+        return savedProject.getProjectId();
     }
 
     public void updateProject(Long projectId, String email,ProjectDTO projectDTO) {
