@@ -161,6 +161,7 @@ public class ProjectService {
             projectDTO.setProjectId(projects.getProjectId());
             projectDTO.setProjectName(projects.getProjectName());
             projectDTO.setProjectDescription(projects.getProjectDescription());
+            projectDTO.setKeywords(projects.getKeywords()); // this should list the keywords, since they are in DB
             projectDTO.setProjectURL(projects.getProjectURL());
             projectDTO.setStartDate(projects.getStartDate());
             projectDTO.setEndDate(projects.getEndDate());
