@@ -20,6 +20,13 @@ export async function uploadProjectCoverImage(projectId: number, file: File): Pr
   return response.data;
 }
 
+export async function uploadProjectContentFiles(projectId: number, files: File[]): Promise<string[]> {
+  const formData = new FormData();
+  files.forEach((file) => formData.append("content", file));
+  const response = await client.post<string[]>(`/content/upload/files/${projectId}`, formData);
+  return response.data;
+}
+
 export async function deleteProject(projectId: number): Promise<void> {
   await client.delete(`/projects/delete/${projectId}`);
 }
