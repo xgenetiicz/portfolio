@@ -1,14 +1,32 @@
 import type { ProjectDTO } from "./types";
+import { VITE_API_BASE_URL } from "../../config";
 
 interface ProjectCardProps {
   project: ProjectDTO;
   isFeatured?: boolean;
   onDelete?: (projectId: number) => void;
+  onView?: (project: ProjectDTO) => void;
 }
 
 export default function ProjectCard(props: ProjectCardProps) {
+  function handleCardClick() {
+    props.onView?.(props.project);
+  }
+
+  function handleDeleteClick(event: React.MouseEvent) {
+    event.stopPropagation();
+    props.onDelete?.(props.project.projectId);
+  }
+
+  function handleVisitClick(event: React.MouseEvent) {
+    event.stopPropagation();
+  }
+
   return (
-    <article className="relative w-full overflow-hidden rounded-2xl border border-line bg-surface shadow-lg transition hover:-translate-y-1 hover:border-accent hover:shadow-2xl">
+    <article
+      onClick={handleCardClick}
+      className="relative w-full cursor-pointer overflow-hidden rounded-2xl border border-line bg-surface shadow-lg transition hover:-translate-y-1 hover:border-accent hover:shadow-2xl"
+    >
       <div className="relative h-44 border-b border-line bg-gradient-to-br from-[#14251d] to-surface flex items-center justify-center">
         {props.isFeatured && (
           <span className="absolute top-3 left-3 bg-accent text-bg text-[10px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full">
@@ -19,7 +37,7 @@ export default function ProjectCard(props: ProjectCardProps) {
         {props.onDelete && (
           <button
             type="button"
-            onClick={() => props.onDelete?.(props.project.projectId)}
+            onClick={handleDeleteClick}
             aria-label="Delete project"
             className="absolute top-3 right-3 inline-flex h-7 w-7 items-center justify-center rounded-lg border border-line bg-surface/80 text-muted transition-colors hover:border-red-400 hover:text-red-400"
           >
@@ -33,7 +51,7 @@ export default function ProjectCard(props: ProjectCardProps) {
 
         {props.project.imagePath ? (
           <img
-            src={`http://localhost:8080/${props.project.imagePath}`}
+            src={`${VITE_API_BASE_URL}/${props.project.imagePath}`}
             alt={props.project.projectName}
             className="w-full h-full object-cover"
           />
@@ -60,7 +78,7 @@ export default function ProjectCard(props: ProjectCardProps) {
           </div>
         )}
 
-        <h3 className="text-lg font-bold text-text hover:text-accent cursor-pointer">
+        <h3 className="text-lg font-bold text-text hover:text-accent">
           {props.project.projectName}
         </h3>
 
@@ -81,6 +99,7 @@ export default function ProjectCard(props: ProjectCardProps) {
             target="_blank"
             rel="noreferrer"
             aria-label="Visit live project"
+            onClick={handleVisitClick}
             className="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-line text-muted hover:border-accent hover:text-accent"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">

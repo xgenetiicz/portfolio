@@ -11,9 +11,11 @@ export type ContentType =
 
 export interface ContentDTO {
   contentId: number;
+  contentType: string;
   filePath: string;
   fileSize: number;
-  contentType: ContentType;
+  projectId: number;
+  uploadDate: string;
 }
 
 export interface ProjectDTO {

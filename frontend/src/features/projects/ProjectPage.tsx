@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import ProjectCard from "./ProjectCard";
 import AddProjectModal from "./AddProjectModal";
+import ViewProjectModal from "./ViewProjectModal";
 import { getProjects, deleteProject } from "./api";
 import type { ProjectDTO } from "./types";
-import Button from "../../components/Button";
 import FabButton from "../../components/FabButton";
 import { useAuth } from "../auth/AuthContext";
 
@@ -12,6 +12,7 @@ export default function ProjectsPage() {
   const [projects, setProjects] = useState<ProjectDTO[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<ProjectDTO | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   function loadProjects() {
@@ -72,6 +73,7 @@ export default function ProjectsPage() {
               project={project}
               isFeatured={index < 3}
               onDelete={isAuthenticated ? handleDelete : undefined}
+              onView={setSelectedProject}
             />
           );
         })}
@@ -81,6 +83,13 @@ export default function ProjectsPage() {
         <AddProjectModal
           onClose={() => setIsAddModalOpen(false)}
           onCreated={loadProjects}
+        />
+      )}
+
+      {selectedProject && (
+        <ViewProjectModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
         />
       )}
     </main>
