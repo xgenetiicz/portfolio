@@ -1,6 +1,8 @@
 import client from "../../api/client";
 import type { ProjectDTO } from "./types";
 
+export type NewProjectInput = Omit<ProjectDTO, "projectId" | "imagePath" | "content">;
+
 export async function getProjects(): Promise<ProjectDTO[]> {
   const response = await client.get<ProjectDTO[]>("/projects/fetchProjects");
   return response.data;
