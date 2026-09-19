@@ -3,6 +3,7 @@ import type { ProjectDTO } from "./types";
 interface ProjectCardProps {
   project: ProjectDTO;
   isFeatured?: boolean;
+  onDelete?: (projectId: number) => void;
 }
 
 export default function ProjectCard(props: ProjectCardProps) {
@@ -14,6 +15,22 @@ export default function ProjectCard(props: ProjectCardProps) {
             Featured
           </span>
         )}
+
+        {props.onDelete && (
+          <button
+            type="button"
+            onClick={() => props.onDelete?.(props.project.projectId)}
+            aria-label="Delete project"
+            className="absolute top-3 right-3 inline-flex h-7 w-7 items-center justify-center rounded-lg border border-line bg-surface/80 text-muted transition-colors hover:border-red-400 hover:text-red-400"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+              <path d="M3 6h18" />
+              <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+            </svg>
+          </button>
+        )}
+
         {props.project.imagePath ? (
           <img
             src={`http://localhost:8080/${props.project.imagePath}`}
@@ -60,8 +77,7 @@ export default function ProjectCard(props: ProjectCardProps) {
             </svg>
           </span>
 
-
-            <a href={props.project.projectURL}
+          <a href={props.project.projectURL}
             target="_blank"
             rel="noreferrer"
             aria-label="Visit live project"
