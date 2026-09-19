@@ -17,7 +17,7 @@ export interface ContentDTO {
 }
 
 export interface ProjectDTO {
-  projectId: number;
+  projectId: number; // It is here because frontend must have a way to fetch it to reveal the project from backend. Also contents get uploaded based on projectId.
   projectName: string;
   projectDescription: string;
   keywords: string[];
