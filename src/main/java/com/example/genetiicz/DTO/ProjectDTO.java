@@ -41,6 +41,11 @@ public class ProjectDTO {
     private List<ContentDTO> content;
 
 
+    private boolean isActive; //It should be false by standard.
+
+    //it should fetch the keywords referred to the projectId-or put them there.
+    private List<String> keywords;
+
 
     //This is for putting image to the project, so this will reveal as a background image
     //on the cards. The idea is to have projectCards that retrieves this image and set it on the

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,6 +25,18 @@ public class ProjectEntity {
 
     @Column(unique = true) //one url for one project, can have several also - but each url must be unique.
     private String projectURL;
+
+    @ElementCollection
+    @CollectionTable(
+            name = "keywords_records", //name of table and it should have the collection of joining columns at
+            joinColumns = @JoinColumn(name = "project_id") // the foreign key to projectId
+
+    )
+    @Column(name ="keywords")
+    private List<String> keywords;
+
+    @Column // i need a column to say explicitly if the project is active or inactive.
+    private boolean isActive;
 
     @Column
     private LocalDate startDate;
