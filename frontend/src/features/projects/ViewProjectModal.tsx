@@ -83,7 +83,7 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
             ) : (
               <img
                 key={current.contentId}
-                src={`http://localhost:8080/${current.filePath}`}
+                src={`${VITE_API_BASE_URL}/${current.filePath}`}
                 alt={`${project.projectName} screenshot`}
                 className="h-full w-full object-cover"
               />
