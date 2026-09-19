@@ -1,8 +1,9 @@
 import { useRef, useState } from "react";
 import type { FormEvent, KeyboardEvent } from "react";
 import axios from "axios";
-import { createProject, uploadProjectCoverImage } from "./api";
+import { createProject, uploadProjectCoverImage, uploadProjectContentFiles } from "./api";
 import type { NewProjectInput } from "./api";
+import Button from "../../components/Button";
 
 interface AddProjectModalProps {
   onClose: () => void;
@@ -29,15 +30,24 @@ function extractErrorMessage(error: unknown, fallback: string): string {
   return fallback;
 }
 
+function formatFileSize(bytes: number): string {
+  const mb = bytes / (1024 * 1024);
+  return mb >= 1 ? `${mb.toFixed(1)} MB` : `${(bytes / 1024).toFixed(0)} KB`;
+}
+
+const MAX_CONTENT_BYTES = 50 * 1024 * 1024; // 50 MB grense
+
 export default function AddProjectModal(props: AddProjectModalProps) {
   const [form, setForm] = useState<NewProjectInput>(emptyForm);
   const [keywordInput, setKeywordInput] = useState("");
   const [isOngoing, setIsOngoing] = useState(false);
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const [coverPreviewUrl, setCoverPreviewUrl] = useState<string | null>(null);
+  const [contentFiles, setContentFiles] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const contentInputRef = useRef<HTMLInputElement>(null);
 
   function handleCoverChange(file: File | null) {
     setCoverImage(file);
@@ -45,6 +55,15 @@ export default function AddProjectModal(props: AddProjectModalProps) {
       if (currentUrl) URL.revokeObjectURL(currentUrl);
       return file ? URL.createObjectURL(file) : null;
     });
+  }
+
+  function addContentFiles(files: FileList | null) {
+    if (!files || files.length === 0) return;
+    setContentFiles((prev) => [...prev, ...Array.from(files)]);
+  }
+
+  function removeContentFile(index: number) {
+    setContentFiles((prev) => prev.filter((_, i) => i !== index));
   }
 
   function addKeyword() {
@@ -82,12 +101,22 @@ export default function AddProjectModal(props: AddProjectModalProps) {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     setError(null);
+
+    if (totalContentBytes > MAX_CONTENT_BYTES) {
+      setError("Content files exceed the 50 MB limit. Remove a file to continue.");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const newProjectId = await createProject(form);
 
       if (coverImage) {
         await uploadProjectCoverImage(newProjectId, coverImage);
+      }
+
+      if (contentFiles.length > 0) {
+        await uploadProjectContentFiles(newProjectId, contentFiles);
       }
 
       props.onCreated();
@@ -103,6 +132,10 @@ export default function AddProjectModal(props: AddProjectModalProps) {
   const inputClasses =
     "w-full rounded-[10px] border border-line bg-surface px-3.5 py-3 text-sm text-text outline-none transition-colors placeholder:text-muted/65 focus:border-accent focus:ring-[3px] focus:ring-accent/20";
   const today = new Date().toISOString().split("T")[0];
+
+  const totalContentBytes = contentFiles.reduce((sum, file) => sum + file.size, 0);
+  const contentUsagePercent = Math.min(100, (totalContentBytes / MAX_CONTENT_BYTES) * 100);
+  const isOverContentLimit = totalContentBytes > MAX_CONTENT_BYTES;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 py-8 font-mono">
@@ -308,24 +341,76 @@ export default function AddProjectModal(props: AddProjectModalProps) {
             </p>
           </div>
 
+          <div className="mb-[22px]">
+            <div className="mb-[9px] flex items-center justify-between">
+              <span className={fieldLabelClasses}>Content</span>
+              <Button type="button" variant="secondary" size="sm" onClick={() => contentInputRef.current?.click()}>
+                + Add content
+              </Button>
+            </div>
+            <input
+              ref={contentInputRef}
+              type="file"
+              multiple
+              onChange={(event) => addContentFiles(event.target.files)}
+              className="hidden"
+            />
+            {contentFiles.length > 0 && (
+              <ul className="space-y-1.5">
+                {contentFiles.map((file, index) => (
+                  <li
+                    key={`${file.name}-${index}`}
+                    className="flex items-center justify-between rounded-[8px] border border-line bg-surface px-3 py-2 text-[13px] text-text"
+                  >
+                    <span className="truncate">{file.name}</span>
+                    <div className="flex items-center gap-3">
+                      <span className="text-[11px] text-muted">{formatFileSize(file.size)}</span>
+                      <button
+                        type="button"
+                        onClick={() => removeContentFile(index)}
+                        aria-label={`Remove ${file.name}`}
+                        className="text-muted transition-colors hover:text-[#ff5c5c]"
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-[15px] w-[15px]">
+                          <polyline points="3 6 5 6 21 6" />
+                          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                          <path d="M10 11v6" />
+                          <path d="M14 11v6" />
+                          <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+                        </svg>
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {contentFiles.length > 0 && (
+              <div className="mt-3">
+                <div className="mb-1.5 flex items-center justify-between text-[11px]">
+                  <span className={isOverContentLimit ? "font-bold text-[#ff8080]" : "text-muted"}>
+                    {formatFileSize(totalContentBytes)} used
+                  </span>
+                  <span className="text-muted">of {formatFileSize(MAX_CONTENT_BYTES)}</span>
+                </div>
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface">
+                  <div
+                    className={`h-full rounded-full transition-all ${isOverContentLimit ? "bg-[#ff5c5c]" : "bg-accent"}`}
+                    style={{ width: `${contentUsagePercent}%` }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
           {error && <p className="mb-4 text-sm text-[#ff8080]">{error}</p>}
 
           <div className="flex justify-end gap-3">
-            <button
-              type="button"
-              onClick={props.onClose}
-              disabled={isSubmitting}
-              className="rounded-[10px] border border-line px-[22px] py-[13px] text-sm font-bold text-muted transition-colors hover:border-muted/50 hover:text-text"
-            >
+            <Button type="button" variant="secondary" onClick={props.onClose} disabled={isSubmitting}>
               Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="rounded-[10px] bg-accent px-[26px] py-[13px] text-sm font-bold text-bg transition-[filter] hover:brightness-110 disabled:opacity-50"
-            >
+            </Button>
+            <Button type="submit" variant="primary" disabled={isSubmitting}>
               {isSubmitting ? "Creating…" : "Save changes"}
-            </button>
+            </Button>
           </div>
         </div>
       </form>
