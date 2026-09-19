@@ -27,6 +27,11 @@ export async function uploadProjectContentFiles(projectId: number, files: File[]
   return response.data;
 }
 
+export async function getContentForProject(projectId: number): Promise<ContentDTO[]> {
+  const response = await client.get<ContentDTO[]>(`/content/project/${projectId}`);
+  return response.data;
+}
+
 export async function deleteProject(projectId: number): Promise<void> {
   await client.delete(`/projects/delete/${projectId}`);
 }
