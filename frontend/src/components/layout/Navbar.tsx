@@ -13,6 +13,15 @@ const navLinkClasses = ({ isActive }: { isActive: boolean }) =>
 const mobileLinkClasses =
   "border-t border-line px-5 py-4 text-[15px] font-medium text-muted transition-colors hover:text-text";
 
+const mobileNavLinkClasses = ({ isActive }: { isActive: boolean }) =>
+  [
+    "relative border-t border-line px-5 py-4 text-[15px] font-medium transition-colors",
+    "before:content-[''] before:absolute before:left-0 before:top-0 before:h-full before:w-0 before:bg-accent before:transition-all",
+    isActive
+      ? "text-text before:w-[3px]"
+      : "text-muted hover:text-text hover:before:w-[3px]",
+  ].join(" ");
+
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -23,11 +32,7 @@ export default function Navbar() {
   return (
     <nav className="relative border-b border-line bg-surface font-mono">
       <div className="mx-auto flex h-[68px] max-w-[1120px] items-center justify-between px-5 md:h-[90px] md:px-8">
-        <Link
-          to="/"
-          onClick={closeMenu}
-          className="text-lg font-bold tracking-tight text-text md:text-[19px]"
-        >
+        <Link to="/" onClick={closeMenu} className="text-lg font-bold tracking-tight text-text md:text-[19px]">
           Build<span className="text-accent">Hub</span>
         </Link>
 
@@ -36,10 +41,7 @@ export default function Navbar() {
           <NavLink to="/" end className={navLinkClasses}>
             Home
           </NavLink>
-
-           <a href="#projects"
-            className="py-1.5 text-sm font-medium text-muted transition-colors hover:text-text"
-          >
+          <a href="#projects" className="py-1.5 text-sm font-medium text-muted transition-colors hover:text-text">
             Projects
           </a>
           <NavLink to="/contact" className={navLinkClasses}>
@@ -53,52 +55,60 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Burger toggle, mobile only */}
+        {/* Burger button, mobile only */}
         <button
           type="button"
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          aria-expanded={isMenuOpen}
-          onClick={() => setIsMenuOpen((open) => !open)}
+          aria-label="Open menu"
+          onClick={() => setIsMenuOpen(true)}
           className="flex h-9 w-9 flex-col items-center justify-center gap-1.5 rounded-lg border border-line md:hidden"
         >
-          <span
-            className={`h-0.5 w-[18px] rounded-full bg-text transition-transform ${
-              isMenuOpen ? "translate-y-2 rotate-45" : ""
-            }`}
-          />
-          <span
-            className={`h-0.5 w-[18px] rounded-full bg-text transition-opacity ${
-              isMenuOpen ? "opacity-0" : ""
-            }`}
-          />
-          <span
-            className={`h-0.5 w-[18px] rounded-full bg-text transition-transform ${
-              isMenuOpen ? "-translate-y-2 -rotate-45" : ""
-            }`}
-          />
+          <span className="h-0.5 w-[18px] rounded-full bg-text" />
+          <span className="h-0.5 w-[18px] rounded-full bg-text" />
+          <span className="h-0.5 w-[18px] rounded-full bg-text" />
         </button>
       </div>
 
-      {/* Mobile menu */}
+      {/* Scrim */}
       <div
-        className={`flex flex-col overflow-hidden transition-[max-height] duration-[250ms] ease-in-out md:hidden ${
-          isMenuOpen ? "max-h-[260px]" : "max-h-0"
+        onClick={closeMenu}
+        aria-hidden="true"
+        className={`fixed inset-0 z-40 bg-black/60 transition-opacity duration-300 md:hidden ${
+          isMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      />
+
+      {/* Slide-in drawer */}
+      <div
+        className={`fixed inset-y-0 right-0 z-50 flex w-[82%] max-w-xs flex-col border-l border-line bg-surface transition-transform duration-300 ease-in-out md:hidden ${
+          isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <Link to="/" onClick={closeMenu} className={mobileLinkClasses}>
+        <div className="flex h-[68px] items-center justify-between border-b border-line px-5">
+          <span className="text-lg font-bold text-text">
+            Build<span className="text-accent">Hub</span>
+          </span>
+          <button
+            type="button"
+            aria-label="Close menu"
+            onClick={closeMenu}
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:text-text"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className="h-3.5 w-3.5">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <NavLink to="/" end onClick={closeMenu} className={mobileNavLinkClasses}>
           Home
-        </Link>
+        </NavLink>
         <a href="#projects" onClick={closeMenu} className={mobileLinkClasses}>
           Projects
         </a>
-        <Link to="/contact" onClick={closeMenu} className={mobileLinkClasses}>
+        <NavLink to="/contact" onClick={closeMenu} className={mobileNavLinkClasses}>
           Contact
-        </Link>
-        <Link
-          to="/login"
-          onClick={closeMenu}
-          className="border-t border-line px-5 py-4 text-[15px] font-bold text-accent"
-        >
+        </NavLink>
+        <Link to="/login" onClick={closeMenu} className="border-t border-line px-5 py-4 text-[15px] font-bold text-accent">
           Login
         </Link>
       </div>
