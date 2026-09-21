@@ -16,6 +16,18 @@ function formatDate(dateString: string): string {
   });
 }
 
+// Server stores files as "<uuid>_<original-name>" to avoid collisions.
+// Strip the uuid prefix back off so the visitor sees the real filename.
+function getDisplayFileName(filePath: string): string {
+  const lastSegment = filePath.split("/").pop() ?? filePath;
+  const separatorIndex = lastSegment.indexOf("_");
+  return separatorIndex === -1 ? lastSegment : lastSegment.substring(separatorIndex + 1);
+}
+
+function isMediaContent(item: ContentDTO): boolean {
+  return item.contentType.startsWith("image") || item.contentType.startsWith("video");
+}
+
 export default function ViewProjectModal(props: ViewProjectModalProps) {
   const { project, onClose } = props;
   const [content, setContent] = useState<ContentDTO[]>([]);
@@ -40,15 +52,19 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
     };
   }, [project.projectId]);
 
+  // Split into what belongs in the carousel (image/video) vs. the download list (everything else, e.g. PDF/ZIP).
+  const mediaContent = content.filter(isMediaContent);
+  const downloadableContent = content.filter((item) => !isMediaContent(item));
+
   function goPrev() {
-    setCurrentIndex((index) => (index === 0 ? content.length - 1 : index - 1));
+    setCurrentIndex((index) => (index === 0 ? mediaContent.length - 1 : index - 1));
   }
 
   function goNext() {
-    setCurrentIndex((index) => (index === content.length - 1 ? 0 : index + 1));
+    setCurrentIndex((index) => (index === mediaContent.length - 1 ? 0 : index + 1));
   }
 
-  const current = content[currentIndex];
+  const current = mediaContent[currentIndex];
   const fieldLabelClasses = "block text-[11px] font-bold uppercase tracking-[0.08em] text-muted mb-[9px]";
 
   return (
@@ -78,7 +94,7 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
                 key={current.contentId}
                 controls
                 className="h-full w-full object-cover"
-                src={`${VITE_API_BASE_URL}${current.filePath}`}
+                src={`${VITE_API_BASE_URL}/${current.filePath}`}
               />
             ) : (
               <img
@@ -89,7 +105,7 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
               />
             )}
 
-            {content.length > 1 && (
+            {mediaContent.length > 1 && (
               <>
                 <button
                   type="button"
@@ -115,13 +131,13 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
             )}
           </div>
 
-          {content.length > 0 && (
+          {mediaContent.length > 0 && (
             <div className="flex items-center justify-between px-1">
               <span className="text-[12px] text-muted">
-                {currentIndex + 1} / {content.length}
+                {currentIndex + 1} / {mediaContent.length}
               </span>
               <div className="flex gap-1.5">
-                {content.map(function renderDot(item, index) {
+                {mediaContent.map(function renderDot(item, index) {
                   return (
                     <button
                       key={item.contentId}
@@ -173,6 +189,38 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
             </div>
           </div>
 
+          {downloadableContent.length > 0 && (
+            <div className="mb-6">
+              <span className={fieldLabelClasses}>Files</span>
+              <ul className="space-y-1.5">
+                {downloadableContent.map(function renderDownload(item) {
+                  const downloadUrl = `${VITE_API_BASE_URL}/api/content/download/${project.projectId}/${item.contentId}`;
+                  return (
+                    <li
+                      key={item.contentId}
+                      className="flex items-center justify-between rounded-[8px] border border-line bg-surface px-3 py-2 text-[13px] text-text"
+                    >
+                      <span className="truncate">{getDisplayFileName(item.filePath)}</span>
+
+                      <a href={downloadUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={`Download ${getDisplayFileName(item.filePath)}`}
+                        className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:border-accent hover:text-accent"
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                          <polyline points="7 10 12 15 17 10" />
+                          <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+
           <div className="mt-auto flex items-center justify-between border-t border-line pt-5">
             <button
               type="button"
@@ -185,8 +233,8 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
               </svg>
               Back to projects
             </button>
-            <a
-              href={project.projectURL}
+
+             <a href={project.projectURL}
               target="_blank"
               rel="noreferrer"
               aria-label="Visit project"
