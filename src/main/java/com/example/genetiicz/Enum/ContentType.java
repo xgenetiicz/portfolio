@@ -1,5 +1,6 @@
 package com.example.genetiicz.Enum;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 public enum ContentType {
 
     //Images
@@ -16,7 +17,9 @@ public enum ContentType {
 
     // Documents
     //pdf is only thing I should accept, if not - i can change it here and add extra.
-    PDF("application/pdf");
+    //Should Accept ZIP also
+    PDF("application/pdf"),
+    ZIP ("application/zip");
 
     private final String mimeType;
 
@@ -24,6 +27,9 @@ public enum ContentType {
         this.mimeType = mimeType;
     }
 
+    //When jackson serialize an ContentType of Enum - instead of looking at .name()
+    //It should use the return value of method instead as video/mp4
+    @JsonValue
     public String getMimeType() {
         return mimeType;
     }
