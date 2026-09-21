@@ -36,9 +36,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
      */
 
-    // TODO: CRITICAL - invalid JWT tokens are swallowed silently and request passes through
-    // Fix: throw 401 not Authenticated when token is invalid instead of allowing request to continue, found this by entering three integeres or characters,
-    // but when the bearer token is empty,the server is rejecting as it should - but it should reject each requests that doesn't store THE WHOLE JWT token.
 
     @Override
     protected void doFilterInternal (@NotNull HttpServletRequest request,
