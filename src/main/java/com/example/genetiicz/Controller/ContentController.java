@@ -6,11 +6,18 @@ import com.example.genetiicz.Entity.UserEntity;
 import com.example.genetiicz.Repository.UserRepository;
 import com.example.genetiicz.Service.ContentService;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -66,5 +73,33 @@ public class ContentController {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         contentService.deleteProjectImage(projectId, email);
         return ResponseEntity.ok("Project image deleted successfully");
+    }
+
+    @GetMapping("/download/{projectId}/{contentId}")
+    public ResponseEntity<Resource> downloadContent(@PathVariable Long projectId, @PathVariable Long contentId) throws FileNotFoundException, FileUploadException, MalformedURLException {
+        String filePath = contentService.downloadContent(projectId, contentId);
+        //This one was a new one I have never encountered this.
+        Path path = Paths.get(filePath).toAbsolutePath().normalize();
+        Resource resource = new UrlResource(path.toUri());
+
+        String storedFileName = path.getFileName().toString();
+        String fileName = storedFileName.substring(storedFileName.indexOf("_") + 1);
+
+        //The downloaded file is not recognized as which MIME-Type only as an ordinary All Files
+        MediaType mediaType = MediaTypeFactory.getMediaType(resource)
+                .orElse(MediaType.APPLICATION_OCTET_STREAM);
+
+        //The PDF file will be an inline attachment were user can choose to download from their own pdf reader instead
+        //And the zip file as an attachment
+
+        ContentDisposition.Builder contentBuilder = mediaType.equals(MediaType.APPLICATION_PDF)
+                ? ContentDisposition.inline() : ContentDisposition.attachment();
+
+        ContentDisposition disposition = contentBuilder.filename(fileName, StandardCharsets.UTF_8).build();
+
+        return ResponseEntity.ok()
+                .contentType(mediaType)
+                .header(HttpHeaders.CONTENT_DISPOSITION, disposition.toString())
+                .body(resource);
     }
 }
