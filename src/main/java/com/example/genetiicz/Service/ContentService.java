@@ -16,6 +16,7 @@ import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -248,5 +249,43 @@ public class ContentService {
 
         currentProject.setImagePath(null);
         projectRepository.save(currentProject); //save the currentProject without imagePath after deletion.
+    }
+
+    //Download files - the idea is that the user have possibility to download the content within the project.
+    //But these files should only be associated with pdf for now. JPEG/PNG and etc with MP4 should be viewed.
+
+    //only PDF & ZIP should be allowed to download.
+
+    public String downloadContent(Long projectId,Long contentId) throws FileUploadException, FileNotFoundException {
+
+        Optional<ProjectEntity> findProject = projectRepository.findById(projectId);
+        if(findProject.isEmpty()) {
+            throw new ProjectNotFoundException("Project not found");
+        }
+            Optional<ContentEntity> findContent = contentRepository.findById(contentId);
+            if (findContent.isEmpty()){
+                throw new FileNotFoundException("Content is not found for this project");
+            }
+                //If we find the contentId, store the object into contentAvailable so i can crosscheck with Enum list -> and can use primitive statement checks instead of .equal()
+        ContentEntity contentAvailable = getContentEntity(projectId, findContent);
+
+        return  contentAvailable.getFilePath();
+    }
+
+    private static ContentEntity getContentEntity(Long projectId, Optional<ContentEntity> findContent) throws FileNotFoundException, FileUploadException {
+        //Nice ->IntelliJ extracted the method and made projectId and findContent return ContentAvailable.
+        ContentEntity contentAvailable = findContent.get();
+
+        //Now, i need to crosscheck that the content is referred to the projectId.
+
+        if (!contentAvailable.getProjectEntity().getProjectId().equals(projectId)) {
+            throw new FileNotFoundException("Content is not found for this project");
+        }
+
+        //crosscheck here with operators
+        if(contentAvailable.getContentType() != ContentType.PDF && contentAvailable.getContentType() != ContentType.ZIP) {
+            throw  new FileUploadException("Only ZIP files can be downloaded this way");
+        }
+        return contentAvailable;
     }
 }
