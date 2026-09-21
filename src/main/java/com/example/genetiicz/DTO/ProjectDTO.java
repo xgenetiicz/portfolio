@@ -1,11 +1,11 @@
 package com.example.genetiicz.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -48,13 +48,8 @@ public class ProjectDTO {
     private List<String> keywords;
 
 
-    //This is for putting image to the project, so this will reveal as a background image
-    //on the cards. The idea is to have projectCards that retrieves this image and set it on the
-    //project card but this needs to be converted to bytes in db.
-
-
-    //THE BEST WAY TO DO THIS IS TO MAKE THIS WORK AS AN METHOD public void saveFile() need to look on this later
-    //-will do this another time.
-   // private MultipartFile projectFile;
-
+    @AssertTrue(message = "*End Date is required*")
+    public boolean isEndDate() {
+        return endDate == null || !endDate.isBefore(startDate);
+    }
 }
