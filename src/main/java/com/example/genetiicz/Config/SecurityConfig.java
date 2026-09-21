@@ -69,6 +69,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/content/project/{projectId}").permitAll()
                         //for serving content
                         .requestMatchers("/uploads/**").permitAll()
+                        //for downloading content, and with whole URI so everyone can download pdf or zip files.
+                        .requestMatchers("/api/content/download/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
