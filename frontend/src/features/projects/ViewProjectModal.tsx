@@ -168,17 +168,23 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
             </span>
           )}
 
-          <div className="mb-5">
-            <span className={fieldLabelClasses}>Start date</span>
-            <p className="text-sm font-bold text-text">{formatDate(project.startDate)}</p>
-          </div>
+         <div className="mb-5 grid grid-cols-2 gap-3">
+           <div>
+             <span className={fieldLabelClasses}>Start date</span>
+             <p className="text-sm font-bold text-text">
+               {formatDate(project.startDate)}
+             </p>
+           </div>
 
-          {project.endDate && (
-            <div className="mb-5">
-              <span className={fieldLabelClasses}>End date</span>
-              <p className="text-sm font-bold text-text">{formatDate(project.endDate)}</p>
-            </div>
-          )}
+           {project.endDate && (
+             <div>
+               <span className={fieldLabelClasses}>End date</span>
+               <p className="text-sm font-bold text-text">
+                 {formatDate(project.endDate)}
+               </p>
+             </div>
+           )}
+         </div>
 
           <div className="mb-6">
             <span className={fieldLabelClasses}>Technologies</span>
