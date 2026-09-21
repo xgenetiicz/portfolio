@@ -173,6 +173,13 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
             <p className="text-sm font-bold text-text">{formatDate(project.startDate)}</p>
           </div>
 
+          {project.endDate && (
+            <div className="mb-5">
+              <span className={fieldLabelClasses}>End date</span>
+              <p className="text-sm font-bold text-text">{formatDate(project.endDate)}</p>
+            </div>
+          )}
+
           <div className="mb-6">
             <span className={fieldLabelClasses}>Technologies</span>
             <div className="flex flex-wrap gap-2">
