@@ -19,7 +19,10 @@ public enum ContentType {
     //pdf is only thing I should accept, if not - i can change it here and add extra.
     //Should Accept ZIP also
     PDF("application/pdf"),
-    ZIP ("application/zip");
+    ZIP ("application/zip"),
+
+    //okay found out that windows browser process zip files different??? and the first one is already used by macOS and Linux
+    ZIP_WINDOWS ("application/x-zip-compressed");
 
     private final String mimeType;
 

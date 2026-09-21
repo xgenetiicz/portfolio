@@ -283,7 +283,9 @@ public class ContentService {
         }
 
         //crosscheck here with operators
-        if(contentAvailable.getContentType() != ContentType.PDF && contentAvailable.getContentType() != ContentType.ZIP) {
+        if(contentAvailable.getContentType() != ContentType.PDF
+                && contentAvailable.getContentType() != ContentType.ZIP
+                && contentAvailable.getContentType() != ContentType.ZIP_WINDOWS) {
             throw  new FileUploadException("Only ZIP files can be downloaded this way");
         }
         return contentAvailable;
