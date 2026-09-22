@@ -3,7 +3,6 @@ import { VITE_API_BASE_URL } from "../../config";
 
 interface ProjectCardProps {
   project: ProjectDTO;
-  isFeatured?: boolean;
   onDelete?: (projectId: number) => void;
   onView?: (project: ProjectDTO) => void;
 }
@@ -28,12 +27,6 @@ export default function ProjectCard(props: ProjectCardProps) {
       className="relative w-full cursor-pointer overflow-hidden rounded-2xl border border-line bg-surface shadow-lg transition hover:-translate-y-1 hover:border-accent hover:shadow-2xl"
     >
       <div className="relative h-44 border-b border-line bg-gradient-to-br from-[#14251d] to-surface flex items-center justify-center">
-        {props.isFeatured && (
-          <span className="absolute top-3 left-3 bg-accent text-bg text-[10px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full">
-            Featured
-          </span>
-        )}
-
         {props.onDelete && (
           <button
             type="button"
