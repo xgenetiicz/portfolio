@@ -79,6 +79,7 @@ public class ProjectService {
             project.setStartDate(projectDTO.getStartDate());
             project.setEndDate(projectDTO.getEndDate());
             project.setActive(projectDTO.isActive()); // set the status of the project.
+            project.setProjectCategory(projectDTO.getProjectCategory());
             project.setUserEntity(projectAdmin.get());
 
             // project.setProjectFile(projectDTO.getProjectFile());
@@ -112,6 +113,7 @@ public class ProjectService {
         updateProject.setStartDate(projectDTO.getStartDate());
         updateProject.setEndDate(projectDTO.getEndDate());
         updateProject.setActive(projectDTO.isActive());
+        updateProject.setProjectCategory(projectDTO.getProjectCategory());
 
         projectRepository.save(updateProject); // update the project and save it to entity
     }
@@ -175,6 +177,7 @@ public class ProjectService {
             projectDTO.setEndDate(projects.getEndDate());
             projectDTO.setImagePath(projects.getImagePath());
             projectDTO.setActive(projects.isActive());
+            projectDTO.setProjectCategory(projects.getProjectCategory());
 
             // i need a inner loop to match all contents provided related to project.
             //Found this out by testing and verifying that the content are not shown in JSON body fields

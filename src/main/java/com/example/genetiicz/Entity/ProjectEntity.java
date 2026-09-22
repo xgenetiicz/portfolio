@@ -1,5 +1,6 @@
 package com.example.genetiicz.Entity;
 
+import com.example.genetiicz.Enum.ProjectCategory;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,6 +48,10 @@ public class ProjectEntity {
 
     @Column
     private String imagePath;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private ProjectCategory projectCategory;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

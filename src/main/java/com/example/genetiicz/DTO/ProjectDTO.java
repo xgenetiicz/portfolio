@@ -1,5 +1,6 @@
 package com.example.genetiicz.DTO;
 
+import com.example.genetiicz.Enum.ProjectCategory;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
@@ -52,4 +53,6 @@ public class ProjectDTO {
     public boolean isEndDate() {
         return endDate == null || !endDate.isBefore(startDate);
     }
+
+    private ProjectCategory projectCategory;
 }
