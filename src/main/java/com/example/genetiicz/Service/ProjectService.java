@@ -7,6 +7,7 @@ import com.example.genetiicz.Entity.ProjectEntity;
 import com.example.genetiicz.Entity.UserEntity;
 import com.example.genetiicz.Enum.Role;
 
+import com.example.genetiicz.Exceptions.DuplicateProjectURLException;
 import com.example.genetiicz.Exceptions.NotAuthorizedException;
 import com.example.genetiicz.Exceptions.ProjectNotFoundException;
 import com.example.genetiicz.Repository.ContentRepository;
@@ -45,8 +46,6 @@ public class ProjectService {
     //I want to add method for actual setting values for Project with DTO.
 
     public Long addProject(ProjectDTO projectDTO, String email) throws RoleNotFoundException {
-        //Want to print first how the user can actually add - for later implementation
-        System.out.println("Click on '+ Add Project'\n So you can add the desired project!");
         //there is a generatedValue so we don't need to set the id for the project
         //This is the same as user, but here we do this for project instead.
         //And we need also to save this, and this should actually set values for the user
@@ -60,6 +59,9 @@ public class ProjectService {
         //to the correct project. *I have this by optional now in UserRepository*
         Optional <UserEntity> projectAdmin = userRepository.findByRoleAndEmail(Role.ADMIN,email);
 
+        //Need to store the object found in a boolean reference object to check it later
+        boolean checkDuplicate = projectRepository.existsByProjectURL(projectDTO.getProjectURL());
+
         if (!projectAdmin.isPresent()) { // i think the best way is an boolean to check if the presence is there so i can then map the project to the admin
             throw new RoleNotFoundException("No Admin here");
             }
@@ -67,7 +69,13 @@ public class ProjectService {
             project.setProjectName(projectDTO.getProjectName());
             project.setProjectDescription(projectDTO.getProjectDescription());
             project.setKeywords(projectDTO.getKeywords()); //keywords will appear right after description
-            project.setProjectURL(projectDTO.getProjectURL());
+
+            //the statement check if not duplicate - else will throw it.
+            if(!checkDuplicate) {
+                project.setProjectURL(projectDTO.getProjectURL());
+            } else {
+                throw new DuplicateProjectURLException("Another project is referred to this URL, please use another one!");
+            }
             project.setStartDate(projectDTO.getStartDate());
             project.setEndDate(projectDTO.getEndDate());
             project.setActive(projectDTO.isActive()); // set the status of the project.

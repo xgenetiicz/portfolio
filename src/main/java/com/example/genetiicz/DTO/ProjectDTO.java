@@ -48,7 +48,7 @@ public class ProjectDTO {
     private List<String> keywords;
 
 
-    @AssertTrue(message = "*End Date is required*")
+    @AssertTrue(message = "End date cannot be before start date")
     public boolean isEndDate() {
         return endDate == null || !endDate.isBefore(startDate);
     }
