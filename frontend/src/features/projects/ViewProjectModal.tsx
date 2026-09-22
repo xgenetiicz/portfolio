@@ -163,12 +163,23 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
            <p className="text-sm leading-relaxed text-muted">{project.projectDescription}</p>
          </div>
 
-          {!project.endDate && (
-            <span className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-accent/40 px-3 py-[5px] text-xs font-semibold text-accent">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-              Ongoing project
-            </span>
-          )}
+          <div className="mb-6 flex flex-wrap items-center gap-2">
+            {!project.endDate ? (
+              <span className="inline-flex w-fit items-center gap-2 rounded-full border border-accent/40 px-3 py-[5px] text-xs font-semibold text-accent">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                Ongoing project
+              </span>
+            ) : (
+              <span
+                className={`inline-flex w-fit items-center gap-2 rounded-full border px-3 py-[5px] text-xs font-semibold ${
+                  project.isActive ? "border-accent/40 text-accent" : "border-line text-muted"
+                }`}
+              >
+                <span className={`h-1.5 w-1.5 rounded-full ${project.isActive ? "bg-accent" : "bg-muted"}`} />
+                {project.isActive ? "Active" : "Inactive"}
+              </span>
+            )}
+          </div>
 
          <div className="mb-5 grid grid-cols-2 gap-3">
            <div>

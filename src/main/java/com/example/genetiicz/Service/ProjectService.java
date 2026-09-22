@@ -174,6 +174,7 @@ public class ProjectService {
             projectDTO.setStartDate(projects.getStartDate());
             projectDTO.setEndDate(projects.getEndDate());
             projectDTO.setImagePath(projects.getImagePath());
+            projectDTO.setActive(projects.isActive());
 
             // i need a inner loop to match all contents provided related to project.
             //Found this out by testing and verifying that the content are not shown in JSON body fields
