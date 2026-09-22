@@ -203,6 +203,16 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Source: https://www.baeldung.com/java-spring-bind-custom-validation-message
+        Using Baeldung documentary for creating custom validations and messaging to explain to user of what is not working
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+
+
     </dependencies>
 
 	<build>
