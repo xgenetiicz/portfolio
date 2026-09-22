@@ -20,7 +20,8 @@ public class ProjectEntity {
     @Column
     private String projectName;
 
-    @Column
+    //varchar on 255 limit
+    @Column(length = 2000)
     private String projectDescription;
 
     @Column(unique = true) //one url for one project, can have several also - but each url must be unique.
