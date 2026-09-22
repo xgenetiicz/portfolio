@@ -3,6 +3,7 @@ package com.example.genetiicz.Exceptions;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
@@ -56,5 +57,12 @@ public class RestExceptions  {
     @ExceptionHandler(RoleNotFoundException.class)
     public ResponseEntity<String> roleNotFound(RoleNotFoundException exception) {
         return ResponseEntity.status(500).body(exception.getMessage());
+    }
+
+    //Creating a MethodArgumentNotValidException -  this is because the response from each feature is not giving correct response based on what is happening within the application.
+    // The validations are happening, but with the wrong response.
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String>notValid(MethodArgumentNotValidException exception) {
+        return ResponseEntity.status(400).body("Not valid");
     }
 }
