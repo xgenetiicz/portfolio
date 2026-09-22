@@ -44,7 +44,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="relative border-b border-line bg-surface font-mono">
+    <nav className="sticky top-0 z-30 border-b border-line bg-surface font-mono">
       <div className="mx-auto flex h-[68px] max-w-[1120px] items-center justify-between px-5 md:h-[90px] md:px-8">
         <Link to="/" onClick={closeMenu} className="flex items-center gap-2.5 text-lg font-bold tracking-tight text-text md:text-[19px]">
           <span>Genti's Build<span className="text-accent">Hub</span></span>
