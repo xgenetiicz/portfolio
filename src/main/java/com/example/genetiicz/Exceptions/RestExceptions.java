@@ -3,6 +3,7 @@ package com.example.genetiicz.Exceptions;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -10,6 +11,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.management.relation.RoleNotFoundException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestControllerAdvice
 public class RestExceptions  {
@@ -63,6 +67,15 @@ public class RestExceptions  {
     // The validations are happening, but with the wrong response.
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String>notValid(MethodArgumentNotValidException exception) {
-        return ResponseEntity.status(400).body("Not valid");
+
+        List<FieldError> errorList = exception.getBindingResult().getFieldErrors();
+        StringBuilder errorMessage = new StringBuilder();
+        for (FieldError error : errorList){
+            if(!errorMessage.isEmpty()){
+                errorMessage.append(", \n"); //for each error that is not EMPTY - we append ", \newline"
+            }
+            errorMessage.append(error.getDefaultMessage());
+        }
+        return ResponseEntity.status(400).body(errorMessage.toString());
     }
 }
