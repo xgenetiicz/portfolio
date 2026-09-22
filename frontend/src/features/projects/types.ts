@@ -9,6 +9,8 @@ export type ContentType =
   | "WEBM"
   | "PDF";
 
+export type ProjectCategory = "SOFTWARE" | "HARDWARE" | "OTHER";
+
 export interface ContentDTO {
   contentId: number;
   contentType: string;
@@ -29,4 +31,5 @@ export interface ProjectDTO {
   endDate: string | null;
   imagePath: string | null;
   content: ContentDTO[];
+    projectCategory: ProjectCategory;
 }
