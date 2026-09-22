@@ -28,10 +28,9 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity, Long> {
     List<ProjectEntity> findAllByUserEntity_UserName(String userName);
 
     /*
-    So if the user have or does not have an project, there should be an optional value of it so the image that represents the value
-    of the page should be an object or null.
+    Boolean value to check for duplicated URL
      */
-
+    boolean existsByProjectURL(String projectURL);
 
     // it is sat as AndUserEntity_UserId since i am telling jpa hibernate
     // to find the userId at UserEntity table. projectId already has a joincolumn on it manytoOne, but the declarative query still needs to be declared where to fetch it.

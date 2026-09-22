@@ -78,4 +78,10 @@ public class RestExceptions  {
         }
         return ResponseEntity.status(400).body(errorMessage.toString());
     }
+
+    //ExceptionHandler for DuplicateProjectURL
+    @ExceptionHandler(DuplicateProjectURLException.class)
+    public ResponseEntity<String>notValidURL(DuplicateProjectURLException exception) {
+        return ResponseEntity.status(400).body(exception.getMessage());
+    }
 }
