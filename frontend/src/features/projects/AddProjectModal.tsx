@@ -2,13 +2,19 @@ import { useRef, useState } from "react";
 import type { FormEvent, KeyboardEvent } from "react";
 import axios from "axios";
 import { createProject, uploadProjectCoverImage, uploadProjectContentFiles } from "./api";
-import type { NewProjectInput } from "./api";
+import type { NewProjectInput,ProjectCategory } from "./api";
 import Button from "../../components/Button";
 
 interface AddProjectModalProps {
   onClose: () => void;
   onCreated: () => void;
 }
+
+const categoryOptions: { value: ProjectCategory; label: string }[] = [
+  { value: "SOFTWARE", label: "Software" },
+  { value: "HARDWARE", label: "Hardware" },
+  { value: "OTHER", label: "Other" },
+];
 
 const emptyForm: NewProjectInput = {
   projectName: "",
@@ -18,6 +24,7 @@ const emptyForm: NewProjectInput = {
   projectURL: "",
   startDate: "",
   endDate: null,
+  projectCategory: "SOFTWARE",
 };
 
 function extractErrorMessage(error: unknown, fallback: string): string {
@@ -271,6 +278,27 @@ export default function AddProjectModal(props: AddProjectModalProps) {
               required
               className={inputClasses}
             />
+          </div>
+
+          <div className="mb-[22px]">
+            <span className={fieldLabelClasses}>Category</span>
+            <div className="inline-flex overflow-hidden rounded-[10px] border border-line">
+              {categoryOptions.map(function renderCategoryOption(option) {
+                const isSelected = form.projectCategory === option.value;
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setForm({ ...form, projectCategory: option.value })}
+                    className={`flex items-center gap-[7px] px-[18px] py-[10px] text-[13px] font-bold transition-colors ${
+                      isSelected ? "bg-accent text-bg" : "text-muted"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           <div className="mb-[22px] grid grid-cols-2 gap-[18px]">

@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import ProjectCard from "./ProjectCard";
 import AddProjectModal from "./AddProjectModal";
 import ViewProjectModal from "./ViewProjectModal";
 import { getProjects, deleteProject } from "./api";
-import type { ProjectDTO } from "./types";
+import type { ProjectDTO, ProjectCategory } from "./types";
 import FabButton from "../../components/FabButton";
 import { useAuth } from "../auth/AuthContext";
+
+const categoryFilters: { value: ProjectCategory | null; label: string }[] = [
+  { value: "SOFTWARE", label: "Software" },
+  { value: "HARDWARE", label: "Hardware" },
+  { value: "OTHER", label: "Other" },
+];
 
 export default function ProjectsPage() {
   const { isAuthenticated } = useAuth();
@@ -14,6 +21,9 @@ export default function ProjectsPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<ProjectDTO | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const activeCategory = searchParams.get("category") as ProjectCategory | null;
 
   function loadProjects() {
     setIsLoading(true);
@@ -48,6 +58,19 @@ export default function ProjectsPage() {
     }
   }
 
+  function handleCategoryClick(category: ProjectCategory | null) {
+    setSearchParams(function updateParams(prev) {
+      const next = new URLSearchParams(prev);
+      if (category) next.set("category", category);
+      else next.delete("category");
+      return next;
+    });
+  }
+
+  const filteredProjects = activeCategory
+    ? projects.filter((project) => project.projectCategory === activeCategory)
+    : projects;
+
   return (
     <main className="mx-auto max-w-6xl px-4 py-16 font-mono">
       <div className="mb-8 flex items-center justify-between">
@@ -61,12 +84,30 @@ export default function ProjectsPage() {
 
       {error && <p className="mb-4 text-sm text-red-400">{error}</p>}
 
+      <div className="mb-6 flex gap-2">
+        {categoryFilters.map(function renderFilter(filter) {
+          const isSelected = activeCategory === filter.value;
+          return (
+            <button
+              key={filter.label}
+              type="button"
+              onClick={() => handleCategoryClick(filter.value)}
+              className={`rounded-full border px-3.5 py-1.5 text-xs font-bold transition-colors ${
+                isSelected ? "border-accent bg-accent text-bg" : "border-line text-muted hover:border-accent hover:text-accent"
+              }`}
+            >
+              {filter.label}
+            </button>
+          );
+        })}
+      </div>
+
       <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {isLoading && <p className="text-muted"></p>}
-        {!isLoading && projects.length === 0 && (
+        {!isLoading && filteredProjects.length === 0 && (
           <p className="text-muted">No projects yet</p>
         )}
-        {projects.map(function renderProject(project, index) {
+        {filteredProjects.map(function renderProject(project, index) {
           return (
             <ProjectCard
               key={project.projectId}

@@ -1,5 +1,7 @@
 import client from "../../api/client";
 import type { ProjectDTO } from "./types";
+import type { ProjectCategory } from "./types";
+
 
 export type NewProjectInput = Omit<ProjectDTO, "projectId" | "imagePath" | "content">;
 

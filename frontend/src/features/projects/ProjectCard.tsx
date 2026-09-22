@@ -1,6 +1,7 @@
 import type { ProjectDTO } from "./types";
 import { VITE_API_BASE_URL } from "../../config";
 
+
 interface ProjectCardProps {
   project: ProjectDTO;
   onDelete?: (projectId: number) => void;
