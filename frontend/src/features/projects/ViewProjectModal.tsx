@@ -69,7 +69,7 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 py-8 font-mono">
-      <div className="relative flex w-full max-w-[1100px] max-h-[92vh] flex-col overflow-y-auto rounded-2xl border border-line bg-bg sm:flex-row">
+      <div className="relative flex w-full max-w-[1400px] max-h-[92vh] flex-col overflow-y-auto rounded-2xl border border-line bg-bg sm:flex-row">
         <button
           type="button"
           onClick={onClose}
