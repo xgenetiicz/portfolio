@@ -167,7 +167,7 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
             {!project.endDate ? (
               <span className="inline-flex w-fit items-center gap-2 rounded-full border border-accent/40 px-3 py-[5px] text-xs font-semibold text-accent">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                Ongoing project
+                Ongoing
               </span>
             ) : (
               <span
