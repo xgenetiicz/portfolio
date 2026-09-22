@@ -83,7 +83,7 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
         </button>
 
         {/* Media panel — top on mobile, right on desktop */}
-        <div className="order-1 flex flex-col gap-3 p-6 sm:order-2 sm:w-[55%] sm:p-8">
+        <div className="order-1 flex flex-col gap-3 p-6 sm:order-2 sm:w-[55%] sm:p-8 justify-center">
           <div className="relative flex h-[280px] items-center justify-center overflow-hidden rounded-[14px] border border-line bg-gradient-to-br from-accent/10 to-surface sm:h-[380px]">
             {isLoadingContent ? (
               <span className="text-[11px] uppercase tracking-[0.15em] text-muted/70">Loading…</span>
@@ -159,7 +159,9 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
         <div className="order-2 flex flex-col p-6 sm:order-1 sm:w-[45%] sm:p-8">
           <p className="mb-1 text-[13px] font-bold text-accent">$ view</p>
           <h1 className="mb-4 text-2xl font-bold text-text">{project.projectName}</h1>
-          <p className="mb-5 text-sm leading-relaxed text-muted">{project.projectDescription}</p>
+         <div className="mb-5 max-h-[260px] overflow-y-auto pr-2">
+           <p className="text-sm leading-relaxed text-muted">{project.projectDescription}</p>
+         </div>
 
           {!project.endDate && (
             <span className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-accent/40 px-3 py-[5px] text-xs font-semibold text-accent">
