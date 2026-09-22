@@ -1,10 +1,10 @@
 import type { ProjectDTO } from "./types";
 import { VITE_API_BASE_URL } from "../../config";
 
-
 interface ProjectCardProps {
   project: ProjectDTO;
   onDelete?: (projectId: number) => void;
+  onEdit?: (project: ProjectDTO) => void;
   onView?: (project: ProjectDTO) => void;
 }
 
@@ -18,6 +18,11 @@ export default function ProjectCard(props: ProjectCardProps) {
     props.onDelete?.(props.project.projectId);
   }
 
+  function handleEditClick(event: React.MouseEvent) {
+    event.stopPropagation();
+    props.onEdit?.(props.project);
+  }
+
   function handleVisitClick(event: React.MouseEvent) {
     event.stopPropagation();
   }
@@ -28,19 +33,36 @@ export default function ProjectCard(props: ProjectCardProps) {
       className="relative w-full cursor-pointer overflow-hidden rounded-2xl border border-line bg-surface shadow-lg transition hover:-translate-y-1 hover:border-accent hover:shadow-2xl"
     >
       <div className="relative h-44 border-b border-line bg-gradient-to-br from-[#14251d] to-surface flex items-center justify-center">
-        {props.onDelete && (
-          <button
-            type="button"
-            onClick={handleDeleteClick}
-            aria-label="Delete project"
-            className="absolute top-3 right-3 inline-flex h-7 w-7 items-center justify-center rounded-lg border border-line bg-surface/80 text-muted transition-colors hover:border-red-400 hover:text-red-400"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
-              <path d="M3 6h18" />
-              <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-            </svg>
-          </button>
+        {(props.onEdit || props.onDelete) && (
+          <div className="absolute top-3 right-3 flex gap-2">
+            {props.onEdit && (
+              <button
+                type="button"
+                onClick={handleEditClick}
+                aria-label="Edit project"
+                className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-line bg-surface/80 text-muted transition-colors hover:border-accent hover:text-accent"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+                  <path d="M12 20h9" />
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                </svg>
+              </button>
+            )}
+            {props.onDelete && (
+              <button
+                type="button"
+                onClick={handleDeleteClick}
+                aria-label="Delete project"
+                className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-line bg-surface/80 text-muted transition-colors hover:border-red-400 hover:text-red-400"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+                  <path d="M3 6h18" />
+                  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                </svg>
+              </button>
+            )}
+          </div>
         )}
 
         {props.project.imagePath ? (

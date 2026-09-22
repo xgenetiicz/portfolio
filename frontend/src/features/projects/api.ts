@@ -37,3 +37,13 @@ export async function getContentForProject(projectId: number): Promise<ContentDT
 export async function deleteProject(projectId: number): Promise<void> {
   await client.delete(`/projects/delete/${projectId}`);
 }
+
+export async function updateProject(projectId: number, project: ProjectDTO): Promise<string> {
+  const response = await client.put<string>(`/projects/update/${projectId}`, project);
+  return response.data;
+}
+
+export async function deleteContent(projectId: number, contentId: number): Promise<string> {
+  const response = await client.delete<string>(`/content/delete/${projectId}/${contentId}`);
+  return response.data;
+}

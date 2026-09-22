@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import ProjectCard from "./ProjectCard";
 import AddProjectModal from "./AddProjectModal";
+import EditProjectModal from "./EditProjectModal";
 import ViewProjectModal from "./ViewProjectModal";
 import { getProjects, deleteProject } from "./api";
 import type { ProjectDTO, ProjectCategory } from "./types";
 import FabButton from "../../components/FabButton";
 import { useAuth } from "../auth/AuthContext";
 
-const categoryFilters: { value: ProjectCategory | null; label: string }[] = [
+const categoryFilters: { value: ProjectCategory; label: string }[] = [
   { value: "SOFTWARE", label: "Software" },
   { value: "HARDWARE", label: "Hardware" },
   { value: "OTHER", label: "Other" },
@@ -19,6 +20,7 @@ export default function ProjectsPage() {
   const [projects, setProjects] = useState<ProjectDTO[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState<ProjectDTO | null>(null);
   const [selectedProject, setSelectedProject] = useState<ProjectDTO | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -58,11 +60,11 @@ export default function ProjectsPage() {
     }
   }
 
-  function handleCategoryClick(category: ProjectCategory | null) {
+  function handleCategoryClick(category: ProjectCategory) {
     setSearchParams(function updateParams(prev) {
       const next = new URLSearchParams(prev);
-      if (category) next.set("category", category);
-      else next.delete("category");
+      if (activeCategory === category) next.delete("category");
+      else next.set("category", category);
       return next;
     });
   }
@@ -89,7 +91,7 @@ export default function ProjectsPage() {
           const isSelected = activeCategory === filter.value;
           return (
             <button
-              key={filter.label}
+              key={filter.value}
               type="button"
               onClick={() => handleCategoryClick(filter.value)}
               className={`rounded-full border px-3.5 py-1.5 text-xs font-bold transition-colors ${
@@ -114,6 +116,7 @@ export default function ProjectsPage() {
               project={project}
               isFeatured={index < 3}
               onDelete={isAuthenticated ? handleDelete : undefined}
+              onEdit={isAuthenticated ? setEditingProject : undefined}
               onView={setSelectedProject}
             />
           );
@@ -124,6 +127,14 @@ export default function ProjectsPage() {
         <AddProjectModal
           onClose={() => setIsAddModalOpen(false)}
           onCreated={loadProjects}
+        />
+      )}
+
+      {editingProject && (
+        <EditProjectModal
+          project={editingProject}
+          onClose={() => setEditingProject(null)}
+          onUpdated={loadProjects}
         />
       )}
 
