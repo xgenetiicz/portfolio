@@ -26,10 +26,11 @@ export interface ProjectDTO {
   projectDescription: string;
   keywords: string[];
   isActive: boolean;
+  isFeatured: boolean;
   projectURL: string;
   startDate: string;
   endDate: string | null;
   imagePath: string | null;
   content: ContentDTO[];
-    projectCategory: ProjectCategory;
+  projectCategory: ProjectCategory;
 }

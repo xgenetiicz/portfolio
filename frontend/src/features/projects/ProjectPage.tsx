@@ -114,7 +114,7 @@ export default function ProjectsPage() {
             <ProjectCard
               key={project.projectId}
               project={project}
-              isFeatured={index < 3}
+              isFeatured={project.isFeatured}
               onDelete={isAuthenticated ? handleDelete : undefined}
               onEdit={isAuthenticated ? setEditingProject : undefined}
               onView={setSelectedProject}

@@ -3,6 +3,7 @@ import { VITE_API_BASE_URL } from "../../config";
 
 interface ProjectCardProps {
   project: ProjectDTO;
+  isFeatured?: boolean;
   onDelete?: (projectId: number) => void;
   onEdit?: (project: ProjectDTO) => void;
   onView?: (project: ProjectDTO) => void;
@@ -64,6 +65,12 @@ export default function ProjectCard(props: ProjectCardProps) {
             )}
           </div>
         )}
+
+        {props.isFeatured && (
+                  <span className="absolute top-3 left-3 z-10 rounded-full border border-accent/40 bg-bg/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-accent backdrop-blur-sm">
+                    Featured
+                  </span>
+                )}
 
         {props.project.imagePath ? (
           <img
