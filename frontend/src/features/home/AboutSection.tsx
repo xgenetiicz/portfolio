@@ -34,18 +34,6 @@ export default function AboutSection() {
       </div>
 
       <div className="flex flex-wrap gap-3">
-        <Link
-          to="/projects"
-          className="inline-flex items-center justify-center gap-1.5 rounded-[10px] border border-accent px-[22px] py-[13px] text-sm font-bold font-mono text-accent transition-colors hover:bg-accent hover:text-bg"
-        >
-          View my projects
-        </Link>
-        <Link
-          to="/contact"
-          className="inline-flex items-center justify-center gap-1.5 rounded-[10px] border border-accent px-[22px] py-[13px] text-sm font-bold font-mono text-accent transition-colors hover:bg-accent hover:text-bg"
-        >
-          Get in touch
-        </Link>
       </div>
     </section>
   );
