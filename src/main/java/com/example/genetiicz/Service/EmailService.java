@@ -104,7 +104,10 @@ public class EmailService {
         message.setTo(destinationEmail); // the message with the topic should go to me, and the cases will switch based on picked topic and sent to myPersonalEmail, and stored in destinationEmail
         message.setReplyTo(contactFormDTO.email()); //the users dto email.
         message.setSubject(String.valueOf(contactFormDTO.contactTopic())); //So the Subject is not longer 'subject' but it is the String value of the contactformDTO that has the literal topic chosen.
-        message.setText(contactFormDTO.message());
+        String emailBody = "From: " + contactFormDTO.firstName() + " " + contactFormDTO.lastName()
+                + " (" + contactFormDTO.email() + ")\n\n"
+                + contactFormDTO.message();
+        message.setText(emailBody);
 
         javaMailSender.send(message);
         return destinationEmail;
