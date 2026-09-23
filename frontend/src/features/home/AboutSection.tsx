@@ -7,7 +7,7 @@ export default function AboutSection() {
     <section className="max-w-3xl mx-auto px-6 py-16 border-t border-line">
       <h2 className="text-2xl font-bold text-text mb-4">About me</h2>
       <p className="text-muted leading-relaxed mb-4">
-        I'm a self-taught backend developer specializing in Java and Spring Boot.
+        I'm a backend developer specializing in Java and Spring Boot.
         Before writing my first line of code, I spent years in team leadership
         logistics and port operations, plus a background in professional football.
         That path taught me discipline and how to operate under pressure, which
