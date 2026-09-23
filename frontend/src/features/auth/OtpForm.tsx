@@ -141,13 +141,6 @@ export default function OtpForm(props: OtpFormProps) {
         >
           {props.isSubmitting ? "Verifying…" : "Confirm & log in"}
         </button>
-
-        <p className="mt-5 text-center text-[11px] text-muted">
-          Wrong email?{" "}
-          <button type="button" onClick={props.onClose} className="font-semibold text-muted hover:text-text hover:underline">
-            Close and start over.
-          </button>
-        </p>
       </form>
     </div>
   );

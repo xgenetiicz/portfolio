@@ -315,14 +315,13 @@ public class AuthService {
     //Here should the new method for OneTimePassword be for authentication.
     private void sendOneTimePasswordEmail(UserEntity user) throws MessagingException{
         String subject = "Login OTP Password";
-        String loginCode = "Login Code: " + user.getOtpCode();
+        String loginCode = user.getOtpCode();
         String htmlMessage = "<html>"
                 + "<body style=\"font-family: Arial, sans-serif;\">"
                 + "<div style=\"background-color: #f5f5f5; padding: 20px;\">"
                 + "<h2 style=\"color: #333;\">Welcome to Genti's BuildHubs!</h2>"
                 + "<p style=\"font-size: 16px;\">Please enter the OTP code below to continue:</p>"
                 + "<div style=\"background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1);\">"
-                + "<h3 style=\"color: #333;\">OTP Code:</h3>"
                 + "<p style=\"font-size: 18px; font-weight: bold; color: #007bff;\">" + loginCode + "</p>"
                 + "</div>"
                 + "</div>"
