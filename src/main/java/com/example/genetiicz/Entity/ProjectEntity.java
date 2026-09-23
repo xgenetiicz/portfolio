@@ -49,6 +49,10 @@ public class ProjectEntity {
     @Column
     private String imagePath;
 
+    //for homepage if the project should be displayed there. if true it should be there.
+    @Column
+    private boolean isFeatured;
+
     @Enumerated(EnumType.STRING)
     @Column
     private ProjectCategory projectCategory;

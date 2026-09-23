@@ -44,6 +44,9 @@ public class ProjectDTO {
     @JsonProperty("isActive")
     private boolean isActive; //It should be false by standard.
 
+    @JsonProperty("isFeatured")
+    private boolean isFeatured;
+
     //it should fetch the keywords referred to the projectId-or put them there.
     private List<String> keywords;
 
