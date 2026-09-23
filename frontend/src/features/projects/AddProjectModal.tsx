@@ -21,6 +21,7 @@ const emptyForm: NewProjectInput = {
   projectDescription: "",
   keywords: [],
   isActive: true,
+  isFeatured: false,
   projectURL: "",
   startDate: "",
   endDate: null,
@@ -367,7 +368,20 @@ export default function AddProjectModal(props: AddProjectModalProps) {
               Active = the project is live. Inactive = finished, no longer running.
             </p>
           </div>
-
+                    <label className="-mt-[6px] mb-[22px] flex cursor-pointer items-center gap-2.5">
+                      <input
+                        type="checkbox"
+                        checked={form.isFeatured}
+                        onChange={(event) => setForm({ ...form, isFeatured: event.target.checked })}
+                        className="sr-only peer"
+                      />
+                      <span className="flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-[5px] border-[1.5px] border-line bg-surface transition-colors peer-checked:border-accent peer-checked:bg-accent">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className={`h-3 w-3 text-bg ${form.isFeatured ? "block" : "hidden"}`}>
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      </span>
+                      <span className="text-[13px] font-semibold text-text">Feature on homepage</span>
+                    </label>
           <div className="mb-[22px]">
             <div className="mb-[9px] flex items-center justify-between">
               <span className={fieldLabelClasses}>Content</span>

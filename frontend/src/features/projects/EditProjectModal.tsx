@@ -374,6 +374,16 @@ export default function EditProjectModal(props: EditProjectModalProps) {
               </button>
             </div>
           </div>
+                     <label className="-mt-[6px] mb-[22px] flex cursor-pointer items-center gap-2.5">
+                       <input
+                         type="checkbox"
+                         checked={form.isFeatured}
+                         onChange={(event) => setForm({ ...form, isFeatured: event.target.checked })}
+                         className="sr-only peer"
+                       />
+                       <span className="flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-[5px] border-[1.5px] border-line bg-surface transition-colors peer-checked:border-accent peer-checked:bg-accent" />
+                       <span className="text-[13px] font-semibold text-text">Feature on homepage</span>
+                     </label>
 
           <div className="mb-[22px]">
             <div className="mb-[9px] flex items-center justify-between">
