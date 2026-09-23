@@ -161,6 +161,7 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
           <h1 className="mb-4 text-2xl font-bold text-text">{project.projectName}</h1>
          <div className="mb-5 max-h-[260px] overflow-y-auto pr-2">
            <p className="text-sm leading-relaxed text-muted">{project.projectDescription}</p>
+           <p className="text-sm leading-relaxed text-muted break-words">{project.projectDescription}</p>
          </div>
 
           <div className="mb-6 flex flex-wrap items-center gap-2">
@@ -259,19 +260,20 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
               </svg>
               Back to projects
             </button>
-
-             <a href={project.projectURL}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Visit project"
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-text transition-colors hover:border-accent hover:text-accent"
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-[15px] w-[15px]">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                <polyline points="15 3 21 3 21 9" />
-                <line x1="10" y1="14" x2="21" y2="3" />
-              </svg>
-            </a>
+            {project.projectURL && (
+              <a href={project.projectURL}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Visit project"
+                className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-text transition-colors hover:border-accent hover:text-accent"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-[15px] w-[15px]">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+              </a>
+            )}
           </div>
         </div>
       </div>
