@@ -90,8 +90,8 @@ public class EmailService {
             //so for each case, I want the user to pick the correct case, and then send the email from with the correct case.
 
             // I think that the best way is to part them, one for tickets and requests, and other mail is for collab, ideas or other requests such as offers for example and et cetera.
-            case Collaboration,Ideas,Request-> myPersonalEmail.trim();
-            case Ticket, Issues -> emailUsername; //this is the email smtp is configured to
+            case Offers,Request,Ideas,justSayHi-> myPersonalEmail.trim();
+            case Issues -> emailUsername; //this is the email smtp is configured to
         };
 
         //Now I need to set message.set values for the requested ticket.
