@@ -35,4 +35,7 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity, Long> {
     // it is sat as AndUserEntity_UserId since i am telling jpa hibernate
     // to find the userId at UserEntity table. projectId already has a joincolumn on it manytoOne, but the declarative query still needs to be declared where to fetch it.
     Optional <ProjectEntity>findProjectByProjectIdAndUserEntity_UserId(Long projectId,Long userId);
+
+    //
+    boolean existsByProjectURLAndProjectIdNot(String projectURL, Long projectId);
 }

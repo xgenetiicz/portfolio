@@ -60,7 +60,7 @@ public class ProjectService {
         Optional <UserEntity> projectAdmin = userRepository.findByRoleAndEmail(Role.ADMIN,email);
 
         //Need to store the object found in a boolean reference object to check it later
-        boolean checkDuplicate = projectRepository.existsByProjectURL(projectDTO.getProjectURL());
+        //boolean checkDuplicate = projectRepository.existsByProjectURL(projectDTO.getProjectURL());
 
         if (!projectAdmin.isPresent()) { // i think the best way is an boolean to check if the presence is there so i can then map the project to the admin
             throw new RoleNotFoundException("No Admin here");
@@ -70,11 +70,13 @@ public class ProjectService {
             project.setProjectDescription(projectDTO.getProjectDescription());
             project.setKeywords(projectDTO.getKeywords()); //keywords will appear right after description
 
-            //the statement check if not duplicate - else will throw it.
-            if(!checkDuplicate) {
-                project.setProjectURL(projectDTO.getProjectURL());
+            String projectURL = projectDTO.getProjectURL();
+            if(projectURL == null || projectURL.isBlank()) {
+                project.setProjectURL(null);
+            } else if (projectRepository.existsByProjectURL(projectURL)) {
+                throw new DuplicateProjectURLException("Another project is reffered to this URL");
             } else {
-                throw new DuplicateProjectURLException("Another project is referred to this URL, please use another one!");
+                project.setProjectURL(projectURL);
             }
             project.setStartDate(projectDTO.getStartDate());
             project.setEndDate(projectDTO.getEndDate());
@@ -109,7 +111,16 @@ public class ProjectService {
         updateProject.setProjectName(projectDTO.getProjectName());
         updateProject.setProjectDescription(projectDTO.getProjectDescription());
         updateProject.setKeywords(projectDTO.getKeywords()); //set values for keywords and retrieve.
-        updateProject.setProjectURL(projectDTO.getProjectURL());
+
+        String projectURL = projectDTO.getProjectURL();
+        if (projectURL == null || projectURL.isBlank()) {
+            updateProject.setProjectURL(null);
+        } else if (projectRepository.existsByProjectURLAndProjectIdNot(projectURL, projectId)) {
+            throw new DuplicateProjectURLException("Another project is referred to this URL, please use another one!");
+        } else {
+            updateProject.setProjectURL(projectURL);
+        }
+
         updateProject.setStartDate(projectDTO.getStartDate());
         updateProject.setEndDate(projectDTO.getEndDate());
         updateProject.setActive(projectDTO.isActive());
