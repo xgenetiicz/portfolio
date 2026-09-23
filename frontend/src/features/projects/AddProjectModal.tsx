@@ -275,7 +275,6 @@ export default function AddProjectModal(props: AddProjectModalProps) {
               type="url"
               value={form.projectURL}
               onChange={(event) => setForm({ ...form, projectURL: event.target.value })}
-              required
               className={inputClasses}
             />
           </div>

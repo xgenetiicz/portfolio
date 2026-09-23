@@ -27,8 +27,7 @@ public class ProjectDTO {
     private String projectDescription; //Description for the project
 
     //need to set the value for the projects URL so it is accessable to others later on project view
-    //
-    @NotBlank(message = "*URL is required*")
+    //removed notBlank on projectURL - beacuse it can be blank now.
     private String projectURL;
 
     @NotNull(message = "*Date is required*")
