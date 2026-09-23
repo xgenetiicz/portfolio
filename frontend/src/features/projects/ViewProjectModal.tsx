@@ -157,12 +157,11 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
 
         {/* Info panel — bottom on mobile, left on desktop */}
         <div className="order-2 flex flex-col p-6 sm:order-1 sm:w-[45%] sm:p-8">
-          <p className="mb-1 text-[13px] font-bold text-accent">$ view</p>
-          <h1 className="mb-4 text-2xl font-bold text-text">{project.projectName}</h1>
-         <div className="mb-5 max-h-[260px] overflow-y-auto pr-2">
-           <p className="text-sm leading-relaxed text-muted">{project.projectDescription}</p>
-           <p className="text-sm leading-relaxed text-muted break-words">{project.projectDescription}</p>
-         </div>
+                 <p className="mb-1 text-[13px] font-bold text-accent">$ view</p>
+                 <h1 className="mb-4 text-2xl font-bold text-text">{project.projectName}</h1>
+                 <div className="mb-5 max-h-[260px] overflow-y-auto overflow-x-hidden pr-2">
+                   <p className="text-sm leading-relaxed text-muted break-words">{project.projectDescription}</p>
+                 </div>
 
           <div className="mb-6 flex flex-wrap items-center gap-2">
             {!project.endDate ? (
