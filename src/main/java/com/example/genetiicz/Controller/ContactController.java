@@ -24,7 +24,7 @@ public class ContactController {
         String emailSent = emailService.contactFormWithTopic(contactFormDTO,subject);
 
         if(emailSent.isBlank()) {
-            return ResponseEntity.status(404).body("Email is not sent, and cannot reach the destination");
+            return ResponseEntity.status(404).body("Email is not sent, and cannot reach the destination email");
         } else {
             return ResponseEntity.status(201).body("Email sent to: " + emailSent);
         }
