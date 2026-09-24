@@ -9,3 +9,4 @@ RUN npm run build
 
 FROM caddy:latest
 COPY --from=build /build/dist /srv
+COPY Caddyfile /etc/caddy/Caddyfile
