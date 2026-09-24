@@ -71,6 +71,8 @@ public class SecurityConfig {
                         .requestMatchers("/uploads/**").permitAll()
                         //for downloading content, and with whole URI so everyone can download pdf or zip files.
                         .requestMatchers("/api/content/download/**").permitAll()
+                        //health actuactor checks own health on container.
+                        .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
