@@ -29,6 +29,7 @@ services:
       context: .
       dockerfile: Dockerfile
     image: 'portfolio'
+    pull_policy: build
     container_name: 'portfolioapp'
     environment:
       - 'SERVER_PORT=${SERVER_PORT}'
