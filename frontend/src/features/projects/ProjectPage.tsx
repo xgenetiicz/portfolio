@@ -109,7 +109,7 @@ export default function ProjectsPage() {
         {!isLoading && filteredProjects.length === 0 && (
           <p className="text-muted">No projects yet</p>
         )}
-        {filteredProjects.map(function renderProject(project, index) {
+        {filteredProjects.map(function renderProject(project) {
           return (
             <ProjectCard
               key={project.projectId}

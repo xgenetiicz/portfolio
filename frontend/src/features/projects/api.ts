@@ -1,6 +1,5 @@
 import client from "../../api/client";
-import type { ProjectDTO } from "./types";
-import type { ProjectCategory } from "./types";
+import type { ProjectDTO, ContentDTO } from "./types";
 
 
 export type NewProjectInput = Omit<ProjectDTO, "projectId" | "imagePath" | "content">;
@@ -10,7 +9,7 @@ export async function getProjects(): Promise<ProjectDTO[]> {
   return response.data;
 }
 
-export async function createProject(project: ProjectDTO): Promise<number> {
+export async function createProject(project: NewProjectInput): Promise<number> {
   const response = await client.post<number>("/projects/addproject", project);
   return response.data;
 }

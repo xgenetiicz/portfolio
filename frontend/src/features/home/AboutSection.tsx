@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 const TECH_STACK = ["Java", "Spring Boot", "PostgreSQL", "Docker", "React", "TypeScript"];
 
 export default function AboutSection() {

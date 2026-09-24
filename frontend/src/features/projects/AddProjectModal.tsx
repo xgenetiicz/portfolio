@@ -2,7 +2,8 @@ import { useRef, useState } from "react";
 import type { FormEvent, KeyboardEvent } from "react";
 import axios from "axios";
 import { createProject, uploadProjectCoverImage, uploadProjectContentFiles } from "./api";
-import type { NewProjectInput,ProjectCategory } from "./api";
+import type { ProjectCategory } from "./types";
+import type { NewProjectInput } from "./api";
 import Button from "../../components/Button";
 
 interface AddProjectModalProps {
