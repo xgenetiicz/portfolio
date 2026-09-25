@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: 'postgres:latest'
+    image: 'postgres:18' #So im going to stick with one major version instead of pulling the latest image.
     container_name: postgresdb
     environment:
       - 'POSTGRES_DB=${POSTGRES_DB}'
