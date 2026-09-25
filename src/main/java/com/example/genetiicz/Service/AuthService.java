@@ -18,11 +18,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.stereotype.Service;
 import javax.security.auth.login.AccountNotFoundException;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
-import java.util.Random;
 
 @Slf4j
 @Service
@@ -402,7 +402,7 @@ public class AuthService {
 
     //The method that explicitly generate code, this will be now for verification but also user otp
     private String generateCode() {
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
         int code = random.nextInt(900000) + 100000;
         return String.valueOf(code);
     }
