@@ -47,6 +47,7 @@ export default function Navbar() {
     <nav className="sticky top-0 z-30 border-b border-line bg-surface font-mono">
       <div className="mx-auto flex h-[68px] max-w-[1120px] items-center justify-between px-5 md:h-[90px] md:px-8">
         <Link to="/" onClick={closeMenu} className="flex items-center gap-2.5 text-lg font-bold tracking-tight text-text md:text-[19px]">
+        <img src="/buildhub.svg" alt="BuildHub" className="h-7 w-7 md:h-8 md:w-8" />
           <span>Genti's Build<span className="text-accent">Hub</span></span>
           {isAuthenticated && (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/35 bg-accent/10 px-2 py-0.5 text-[10px] font-bold tracking-wide text-accent">
