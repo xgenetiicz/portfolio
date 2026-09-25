@@ -41,6 +41,9 @@ public class ProjectEntity {
     private boolean isActive;
 
     @Column
+    private boolean isActiveOnHomepage;
+
+    @Column
     private LocalDate startDate;
 
     @Column

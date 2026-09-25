@@ -82,6 +82,7 @@ public class ProjectService {
             project.setEndDate(projectDTO.getEndDate());
             project.setActive(projectDTO.isActive()); // set the status of the project.
             project.setFeatured(projectDTO.isFeatured());
+            project.setActiveOnHomepage(projectDTO.isActiveOnHomepage());
             project.setProjectCategory(projectDTO.getProjectCategory());
             project.setUserEntity(projectAdmin.get());
 
@@ -126,6 +127,7 @@ public class ProjectService {
         updateProject.setEndDate(projectDTO.getEndDate());
         updateProject.setActive(projectDTO.isActive());
         updateProject.setFeatured(projectDTO.isFeatured());
+        updateProject.setActiveOnHomepage(projectDTO.isActiveOnHomepage());
         updateProject.setProjectCategory(projectDTO.getProjectCategory());
 
         projectRepository.save(updateProject); // update the project and save it to entity
@@ -191,6 +193,7 @@ public class ProjectService {
             projectDTO.setImagePath(projects.getImagePath());
             projectDTO.setActive(projects.isActive());
             projectDTO.setFeatured(projects.isFeatured());
+            projectDTO.setActiveOnHomepage(projects.isActiveOnHomepage());
             projectDTO.setProjectCategory(projects.getProjectCategory());
 
             // i need a inner loop to match all contents provided related to project.
