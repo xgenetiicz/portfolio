@@ -1,4 +1,4 @@
-export type ContactTopic = "Offers" | "Request" | "Ideas" | "justSayHi" | "Issues";
+export type ContactTopic = "Offers" | "Request" | "Ideas" | "SayHi" | "Issues";
 
 export interface ContactFormRequest {
   contactTopic: ContactTopic;
