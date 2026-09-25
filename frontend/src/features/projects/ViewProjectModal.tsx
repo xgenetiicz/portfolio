@@ -33,6 +33,7 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
   const [content, setContent] = useState<ContentDTO[]>([]);
   const [isLoadingContent, setIsLoadingContent] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMediaLoaded, setIsMediaLoaded] = useState(false);
 
   useEffect(function loadContent() {
     let cancelled = false;
@@ -67,6 +68,10 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
   const current = mediaContent[currentIndex];
   const fieldLabelClasses = "block text-[11px] font-bold uppercase tracking-[0.08em] text-muted mb-[9px]";
 
+  useEffect(function resetMediaLoaded() {
+    setIsMediaLoaded(false);
+  }, [current?.contentId]);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 py-8 font-mono">
       <div className="relative flex w-full max-w-[1400px] max-h-[92vh] flex-col overflow-y-auto rounded-2xl border border-line bg-bg sm:flex-row">
@@ -89,20 +94,30 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
               <span className="text-[11px] uppercase tracking-[0.15em] text-muted/70">Loading…</span>
             ) : !current ? (
               <span className="text-[11px] uppercase tracking-[0.15em] text-muted/70">[ no content yet ]</span>
-            ) : current.contentType.startsWith("video") ? (
-              <video
-                key={current.contentId}
-                controls
-                className="h-full w-full object-cover"
-                src={`${VITE_API_BASE_URL}/${current.filePath}`}
-              />
             ) : (
-              <img
-                key={current.contentId}
-                src={`${VITE_API_BASE_URL}/${current.filePath}`}
-                alt={`${project.projectName} screenshot`}
-                className="h-full w-full object-cover"
-              />
+              <>
+                {!isMediaLoaded && (
+                  <span className="absolute text-[11px] uppercase tracking-[0.15em] text-muted/70">Loading…</span>
+                )}
+                {current.contentType.startsWith("video") ? (
+                  <video
+                    key={current.contentId}
+                    controls
+                    preload="metadata"
+                    className={`h-full w-full object-cover transition-opacity duration-300 ${isMediaLoaded ? "opacity-100" : "opacity-0"}`}
+                    src={`${VITE_API_BASE_URL}/${current.filePath}`}
+                    onLoadedData={() => setIsMediaLoaded(true)}
+                  />
+                ) : (
+                  <img
+                    key={current.contentId}
+                    src={`${VITE_API_BASE_URL}/${current.filePath}`}
+                    alt={`${project.projectName} screenshot`}
+                    className={`h-full w-full object-cover transition-opacity duration-300 ${isMediaLoaded ? "opacity-100" : "opacity-0"}`}
+                    onLoad={() => setIsMediaLoaded(true)}
+                  />
+                )}
+              </>
             )}
 
             {mediaContent.length > 1 && (
