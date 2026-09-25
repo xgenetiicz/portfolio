@@ -17,8 +17,8 @@ export default function CredentialsForm(props: CredentialsFormProps) {
   return (
     <div className="rounded-2xl border border-line bg-surface p-8 shadow-[0_24px_70px_rgba(0,0,0,0.45)] md:p-10">
       <span className="text-xs font-bold tracking-wide text-accent">$ login</span>
-      <h1 className="mb-1 mt-2.5 text-xl font-bold text-text md:text-[22px]">Welcome back</h1>
-      <p className="mb-7 text-[13px] leading-relaxed text-muted">Sign in to manage your projects.</p>
+      <h1 className="mb-1 mt-2.5 text-xl font-bold text-text md:text-[22px]">Welcome back, Admin!</h1>
+      <p className="mb-7 text-[13px] leading-relaxed text-muted">This login is for site administration only.</p>
 
       <form onSubmit={props.onSubmit}>
         <div className="mb-[18px]">
