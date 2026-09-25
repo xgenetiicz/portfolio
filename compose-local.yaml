@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    container_name: postgresdb
+    environment:
+      - 'POSTGRESLOCAL_DB=${POSTGRESLOCAL_DB}'
+      - 'POSTGRESLOCAL_PASSWORD=${POSTGRESLOCAL_PASSWORD}'
+      - 'POSTGRESLOCAL_USER=${POSTGRESLOCAL_USER}'
+    ports:
+      - '5432:5432'
