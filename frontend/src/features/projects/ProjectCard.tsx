@@ -4,6 +4,7 @@ import { VITE_API_BASE_URL } from "../../config";
 interface ProjectCardProps {
   project: ProjectDTO;
   isFeatured?: boolean;
+  isActiveBadge?: boolean;
   onDelete?: (projectId: number) => void;
   onEdit?: (project: ProjectDTO) => void;
   onView?: (project: ProjectDTO) => void;
@@ -71,6 +72,12 @@ export default function ProjectCard(props: ProjectCardProps) {
                     Featured
                   </span>
                 )}
+
+        {!props.isFeatured && props.isActiveBadge && (
+                <span className="absolute top-3 left-3 z-10 rounded-full border border-emerald-400/40 bg-bg/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-400 backdrop-blur-sm">
+                    Active
+                  </span>
+            )}
 
         {props.project.imagePath ? (
           <img

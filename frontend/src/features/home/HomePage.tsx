@@ -1,6 +1,7 @@
 import AboutSection from "./AboutSection";
 import TerminalIntro from "./TerminalIntro";
 import FeaturedProjects from "./FeaturedProjects";
+import ActiveProjects from "./ActiveProjects";
 
 export default function HomePage() {
   return (
@@ -8,6 +9,7 @@ export default function HomePage() {
       <TerminalIntro />
       <AboutSection />
       <FeaturedProjects />
+      <ActiveProjects />
     </main>
   );
 }
