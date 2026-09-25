@@ -57,8 +57,8 @@ The projects are shown in cards, and include information such as;
 Im going to use my own hardware, and use Caddy for reverse proxy and also run this as an stack with Docker on portainer(GUI -  for containerstacks).
 - Raspberry Pi 16GB RAM
 - Cloudflare with Caddyfile for reverseproxy
-- Dockerfile and correct application.yaml services.
-- GitOps for automatic updates and deployment
+- Dockerfile,application.yaml & compose.yaml
+- `Repository-fetch` with reference on main where compose.yaml is structured at root
 
 **Backend so far**
 - Java  
