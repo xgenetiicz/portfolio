@@ -27,6 +27,7 @@ export interface ProjectDTO {
   keywords: string[];
   isActive: boolean;
   isFeatured: boolean;
+  isActiveOnHomepage: boolean;
   projectURL: string;
   startDate: string;
   endDate: string | null;

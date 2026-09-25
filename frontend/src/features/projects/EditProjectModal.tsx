@@ -282,7 +282,7 @@ export default function EditProjectModal(props: EditProjectModalProps) {
               placeholder="Type a technology and press Enter…"
               className="w-full rounded-[10px] border border-dashed border-line bg-surface px-3.5 py-[11px] text-[13px] text-text outline-none placeholder:text-muted/65 focus:border-solid focus:border-accent"
             />
-            <p className="mt-2 text-[11.5px] text-muted">Press Enter to add, × to remove.</p>
+            <p className="mt-2 text-[11.5px] text-muted">Press Enter to add.</p>
           </div>
 
           <div className="mb-[22px]">
@@ -382,7 +382,17 @@ export default function EditProjectModal(props: EditProjectModalProps) {
                          className="sr-only peer"
                        />
                        <span className="flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-[5px] border-[1.5px] border-line bg-surface transition-colors peer-checked:border-accent peer-checked:bg-accent" />
-                       <span className="text-[13px] font-semibold text-text">Feature on homepage</span>
+                       <span className="text-[13px] font-semibold text-text">Show as Featured on homepage</span>
+                     </label>
+                     <label className="-mt-[6px] mb-[22px] flex cursor-pointer items-center gap-2.5">
+                       <input
+                         type="checkbox"
+                         checked={form.isActiveOnHomepage}
+                         onChange={(event) => setForm({ ...form, isActiveOnHomepage: event.target.checked })}
+                         className="sr-only peer"
+                       />
+                       <span className="flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-[5px] border-[1.5px] border-line bg-surface transition-colors peer-checked:border-accent peer-checked:bg-accent" />
+                       <span className="text-[13px] font-semibold text-text">Show as Active on homepage</span>
                      </label>
 
           <div className="mb-[22px]">

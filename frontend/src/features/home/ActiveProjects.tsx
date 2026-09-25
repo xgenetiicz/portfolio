@@ -13,7 +13,7 @@ export default function ActiveProjects() {
   useEffect(function loadActive() {
     getProjects()
       .then(function handleProjects(fetchedProjects) {
-        setProjects(fetchedProjects.filter((project) => project.isActive));
+        setProjects(fetchedProjects.filter((project) => project.isActiveOnHomepage));
       })
       .catch(function handleError() {
         setProjects([]);
