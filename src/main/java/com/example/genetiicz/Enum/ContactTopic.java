@@ -8,5 +8,5 @@ public enum ContactTopic {
     Request,
     Ideas,
     Issues,
-    justSayHi
+    SayHi
 }

@@ -4,7 +4,7 @@ import axios from "axios";
 import { sendContactForm } from "./api";
 import type { ContactFormRequest, ContactTopic } from "./types";
 
-const TOPIC_OPTIONS: ContactTopic[] = ["Offers", "Ideas", "Request", "Issues", "justSayHi"];
+const TOPIC_OPTIONS: ContactTopic[] = ["Offers", "Ideas", "Request", "Issues", "SayHi"];
 
 function extractErrorMessage(error: unknown, fallback: string): string {
   if (axios.isAxiosError(error)) {
@@ -23,7 +23,7 @@ function extractErrorMessage(error: unknown, fallback: string): string {
 }
 
 export default function ContactPage() {
-  const [contactTopic, setContactTopic] = useState<ContactTopic>("justSayHi");
+  const [contactTopic, setContactTopic] = useState<ContactTopic>("SayHi");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -34,7 +34,7 @@ export default function ContactPage() {
   const [isSent, setIsSent] = useState(false);
 
   function resetForm() {
-    setContactTopic("justSayHi");
+    setContactTopic("SayHi");
     setFirstName("");
     setLastName("");
     setEmail("");

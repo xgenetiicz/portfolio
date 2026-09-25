@@ -36,6 +36,12 @@ export default function FeaturedProjects() {
         </Link>
       </div>
 
+      <p className="text-muted leading-relaxed mb-4">
+       These projects are listed as featured - larger, more complex work that best showcases what
+            I've been building. Most are personal projects done in my free time, though a few, like my
+            bachelor's thesis, mean a lot more to me than that.
+       </p>
+
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {projects.map(function renderProject(project) {
           return (
