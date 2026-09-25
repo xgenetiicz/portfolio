@@ -32,17 +32,7 @@ export default function TerminalIntro() {
               className="opacity-0 translate-y-1.5 text-[#d7e6dd] animate-fadeUpB"
               style={{ animationDelay: "2.5s" }}
             >
-              Java Developer with strong focus on Spring Framework.
-            </div>
-            <div
-              className="opacity-0 translate-y-1.5 text-[#d7e6dd] animate-fadeUpC"
-              style={{ animationDelay: "2.5s" }}
-            >
-              Enjoy your ride through my portfolio page!
-              <span
-                className="inline-block w-2 h-[15px] bg-[var(--accent)] ml-1 align-middle opacity-0 animate-tailFade"
-                style={{ animationDelay: "2.2s" }}
-              ></span>
+              Java Developer with strong focus on Spring Framework. Enjoy your ride through my portfolio page!
             </div>
           </div>
         </div>
