@@ -28,7 +28,7 @@ export default function FeaturedProjects() {
   }
 
   return (
-    <section className="mx-auto max-w-6xl border-t border-line px-6 py-16">
+    <section className="mx-auto max-w-6xl px-6 py-16">
       <div className="mb-8 flex items-center justify-between">
         <h2 className="text-2xl font-bold text-text">Featured projects</h2>
         <Link to="/projects?category=SOFTWARE" className="text-sm font-semibold text-accent hover:underline">

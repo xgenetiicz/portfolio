@@ -2,7 +2,7 @@ const TECH_STACK = ["Java", "Spring Boot", "PostgreSQL", "Docker", "React", "Typ
 
 export default function AboutSection() {
   return (
-    <section className="max-w-6xl mx-auto px-6 py-16 border-t border-line">
+    <section className="max-w-6xl mx-auto px-6 py-16">
       <h2 className="text-2xl font-bold text-text mb-4">About me</h2>
       <p className="text-muted leading-relaxed mb-4">
         I'm a backend developer who has always been drawn to figuring out how things work, fixing them when they don't,
