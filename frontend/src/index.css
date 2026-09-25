@@ -20,13 +20,13 @@
   --animate-fadeUpA: fadeUpA 1s ease forwards;
   --animate-fadeUpB: fadeUpB 1s ease forwards;
   --animate-fadeUpC: fadeUpC 1s ease forwards;
-  --animate-tailFade: tailFade 1s ease forwards;
+  --animate-tailFade: tailFade 2s ease forwards;
 }
 
 .typed {
   box-sizing: content-box;
   animation: typeWhoami 1.2s steps(6, end) forwards,
-             cursorBlink 0.9s steps(1, end) infinite;
+             cursorBlink 0.9s steps(1, end) 4 forwards;
 }
 
 @keyframes typeWhoami {
@@ -51,5 +51,7 @@
 }
 @keyframes tailFade {
   0%   { opacity: 0; }
-  100% { opacity: 1; }
+  20% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0;}
 }
