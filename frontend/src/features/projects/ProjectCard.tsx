@@ -32,9 +32,9 @@ export default function ProjectCard(props: ProjectCardProps) {
   return (
     <article
       onClick={handleCardClick}
-      className="relative w-full cursor-pointer overflow-hidden rounded-2xl border border-line bg-surface shadow-lg transition hover:-translate-y-1 hover:border-accent hover:shadow-2xl"
+      className="relative w-full h-full flex flex-col cursor-pointer overflow-hidden rounded-2xl border border-line bg-surface shadow-lg transition hover:-translate-y-1 hover:border-accent hover:shadow-2xl"
     >
-      <div className="relative h-44 border-b border-line bg-gradient-to-br from-[#14251d] to-surface flex items-center justify-center">
+      <div className="relative h-44 flex-shrink-0 border-b border-line bg-gradient-to-br from-[#14251d] to-surface flex items-center justify-center">
         {(props.onEdit || props.onDelete) && (
           <div className="absolute top-3 right-3 flex gap-2">
             {props.onEdit && (
@@ -92,7 +92,7 @@ export default function ProjectCard(props: ProjectCardProps) {
         )}
       </div>
 
-      <div className="p-5 flex flex-col gap-3">
+      <div className="p-5 flex flex-1 flex-col gap-3">
         {props.project.keywords.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
             {props.project.keywords.map(function renderKeyword(keyword) {
@@ -116,7 +116,7 @@ export default function ProjectCard(props: ProjectCardProps) {
           {props.project.projectDescription}
         </p>
         {props.project.projectURL && (
-          <div className="flex items-center justify-between border-t border-line pt-3.5">
+            <div className="mt-auto flex items-center justify-between border-t border-line pt-3.5">
             <span className="inline-flex items-center gap-1.5 text-accent text-sm font-semibold">
               Visit project
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
