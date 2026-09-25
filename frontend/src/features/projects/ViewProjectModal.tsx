@@ -115,7 +115,7 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
                     <img
                       key={current.contentId}
                       src={`${VITE_API_BASE_URL}/${current.filePath}`}
-                      alt={`${project.projectName} screenshot`}
+                      alt=""
                       className={`h-full w-full object-cover transition-opacity duration-300 ${isMediaLoaded ? "opacity-100" : "opacity-0"}`}
                       onLoad={() => setIsMediaLoaded(true)}
                     />
