@@ -274,15 +274,20 @@ export default function EditProjectModal(props: EditProjectModalProps) {
                 })}
               </div>
             )}
-            <input
-              type="text"
-              value={keywordInput}
-              onChange={(event) => setKeywordInput(event.target.value)}
-              onKeyDown={handleKeywordKeyDown}
-              placeholder="Type a technology and press Enter…"
-              className="w-full rounded-[10px] border border-dashed border-line bg-surface px-3.5 py-[11px] text-[13px] text-text outline-none placeholder:text-muted/65 focus:border-solid focus:border-accent"
-            />
-            <p className="mt-2 text-[11.5px] text-muted">Press Enter to add.</p>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={keywordInput}
+            onChange={(event) => setKeywordInput(event.target.value)}
+            onKeyDown={handleKeywordKeyDown}
+            placeholder="Type a technology…"
+            className="w-full rounded-[10px] border border-dashed border-line bg-surface px-3.5 py-[11px] text-[13px] text-text outline-none placeholder:text-muted/65 focus:border-solid focus:border-accent"
+          />
+          <Button type="button" variant="secondary" onClick={addKeyword}>
+            Add
+          </Button>
+        </div>
+        <p className="mt-2 text-[11.5px] text-muted">Press Enter or tap Add, × to remove.</p>
           </div>
 
           <div className="mb-[22px]">
