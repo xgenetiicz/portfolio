@@ -37,10 +37,9 @@ export default function FeaturedProjects() {
       </div>
 
       <p className="text-muted leading-relaxed mb-4">
-       These projects are listed as featured - larger, more complex work that best showcases what
-         I've been building. Most are personal projects done in my free time, though a few - like my
-         bachelor's thesis - were pretty complex; the part I loved most was getting the software to
-         actually interact with the hardware.
+       These are the ones I'd point you to first - a mix of full platforms and smaller builds I had fun putting together.
+       BuildHub and my bachelor's thesis were the two that really pushed me.
+        For the thesis, it was genuinely fun watching the software actually control physical hardware.
        </p>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
