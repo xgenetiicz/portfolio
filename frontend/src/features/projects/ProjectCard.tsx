@@ -36,7 +36,7 @@ export default function ProjectCard(props: ProjectCardProps) {
       onClick={handleCardClick}
       className="relative w-full h-full flex flex-col cursor-pointer overflow-hidden rounded-2xl border border-line bg-surface shadow-lg transition hover:-translate-y-1 hover:border-accent hover:shadow-2xl"
     >
-      <div className="relative h-44 flex-shrink-0 border-b border-line bg-gradient-to-br from-[#14251d] to-surface flex items-center justify-center">
+      <div className="relative h-44 flex-shrink-0 border-b border-line bg-black flex items-center justify-center">
         {(props.onEdit || props.onDelete) && (
           <div className="absolute top-3 right-3 flex gap-2">
             {props.onEdit && (
