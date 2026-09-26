@@ -34,6 +34,7 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
   const [isLoadingContent, setIsLoadingContent] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMediaLoaded, setIsMediaLoaded] = useState(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false); // so that images can get an fullscreen overlay
 
   useEffect(function loadContent() {
     let cancelled = false;
@@ -92,7 +93,7 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
         <div className="flex flex-col sm:flex-row">
           {/* Media panel — top on mobile, right on desktop */}
           <div className="order-1 flex flex-col gap-3 p-6 pt-0 sm:order-2 sm:w-[55%] sm:p-8 sm:pt-0 justify-center">
-            <div className="relative flex h-[280px] items-center justify-center overflow-hidden rounded-[14px] border border-line bg-gradient-to-br from-accent/10 to-surface sm:h-[380px]">
+            <div className="relative flex h-[280px] items-center justify-center overflow-hidden rounded-[14px] border border-line bg-black sm:h-[380px]">
               {isLoadingContent ? (
                 <span className="text-[11px] uppercase tracking-[0.15em] text-muted/70">Loading…</span>
               ) : !current ? (
@@ -107,17 +108,19 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
                       key={current.contentId}
                       controls
                       preload="metadata"
-                      className={`h-full w-full object-cover transition-opacity duration-300 ${isMediaLoaded ? "opacity-100" : "opacity-0"}`}
+                      className={`h-full w-full object-contain transition-opacity duration-300 ${isMediaLoaded ? "opacity-100" : "opacity-0"}`}
                       src={`${VITE_API_BASE_URL}/${current.filePath}`}
                       onLoadedData={() => setIsMediaLoaded(true)}
+                      onClick={() => setIsLightboxOpen(true)}
                     />
                   ) : (
                     <img
                       key={current.contentId}
                       src={`${VITE_API_BASE_URL}/${current.filePath}`}
                       alt=""
-                      className={`h-full w-full object-cover transition-opacity duration-300 ${isMediaLoaded ? "opacity-100" : "opacity-0"}`}
+                      className={`h-full w-full object-contain transition-opacity duration-300 ${isMediaLoaded ? "opacity-100" : "opacity-0"}`}
                       onLoad={() => setIsMediaLoaded(true)}
+                      onClick={() => setIsLightboxOpen(true)}
                     />
                   )}
                 </>
@@ -294,6 +297,65 @@ export default function ViewProjectModal(props: ViewProjectModalProps) {
             </div>
           </div>
         </div>
+        {isLightboxOpen && current && (
+          <div
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/95 p-4"
+            onClick={() => setIsLightboxOpen(false)}
+          >
+            <button
+              type="button"
+              onClick={() => setIsLightboxOpen(false)}
+              aria-label="Close fullscreen"
+              className="absolute top-4 right-4 text-white/80 hover:text-white"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+
+            {current.contentType.startsWith("video") ? (
+              <video
+                controls
+                autoPlay
+                className="max-h-[90vh] max-w-[90vw] object-contain"
+                src={`${VITE_API_BASE_URL}/${current.filePath}`}
+                onClick={(e) => e.stopPropagation()}
+              />
+            ) : (
+              <img
+                src={`${VITE_API_BASE_URL}/${current.filePath}`}
+                alt={`${project.projectName} screenshot fullscreen`}
+                className="max-h-[90vh] max-w-[90vw] object-contain"
+                onClick={(e) => e.stopPropagation()}
+              />
+            )}
+        {mediaContent.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); goPrev(); }}
+              aria-label="Previous"
+              className="absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-sm transition-colors hover:border-accent hover:text-accent"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); goNext(); }}
+              aria-label="Next"
+              className="absolute right-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-sm transition-colors hover:border-accent hover:text-accent"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </>
+        )}
+          </div>
+        )}
       </div>
     </div>
   );
