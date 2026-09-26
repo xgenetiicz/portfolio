@@ -1,5 +1,6 @@
 import type { ProjectDTO } from "./types";
 import { VITE_API_BASE_URL } from "../../config";
+import { useState } from "react";
 
 interface ProjectCardProps {
   project: ProjectDTO;
@@ -11,6 +12,7 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard(props: ProjectCardProps) {
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
   function handleCardClick() {
     props.onView?.(props.project);
   }
@@ -83,7 +85,8 @@ export default function ProjectCard(props: ProjectCardProps) {
           <img
             src={`${VITE_API_BASE_URL}/${props.project.imagePath}`}
             alt={props.project.projectName}
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover transition-opacity duration-300 ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
+            onLoad={() => setIsImageLoaded(true)}
           />
         ) : (
           <span className="text-[11px] tracking-widest uppercase text-muted">
