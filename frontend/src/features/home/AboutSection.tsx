@@ -7,7 +7,7 @@ export default function AboutSection() {
       <p className="text-muted leading-relaxed mb-4">
         I'm a backend developer who has always been drawn to figuring out how things work, fixing them when they don't,
         and even pushing them beyond what they were originally built to do.
-        Whether it's code, a custom-built PC, a home server, or turning a Toyota Auris into a budget Tesla,
+        Whether it's code, a custom-built PC, a home server, or turning an old Toyota Auris into a budget Tesla with a screen,
         the common denominator is that I've always preferred getting hands-on, experimenting, figuring things out, and solving problems myself.
       </p>
       <p className="text-muted leading-relaxed mb-6">
