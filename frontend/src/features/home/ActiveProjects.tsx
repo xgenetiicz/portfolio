@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import ProjectCard from "../projects/ProjectCard";
 import ViewProjectModal from "../projects/ViewProjectModal";
 import { getProjects } from "../projects/api";
