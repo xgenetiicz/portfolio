@@ -86,7 +86,7 @@ export default function ProjectsPage() {
 
       {error && <p className="mb-4 text-sm text-red-400">{error}</p>}
 
-      <div className="mb-6 flex gap-2">
+      <div className="mb-6 flex gap-2 justify-center">
         {categoryFilters.map(function renderFilter(filter) {
           const isSelected = activeCategory === filter.value;
           return (
