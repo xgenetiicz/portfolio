@@ -1,6 +1,10 @@
 @import "tailwindcss";
 
- body {
+hmtl,body {
+    min-height: 100vh;
+}
+
+body {
     background-color: var(--color-bg);
     margin: 0;
 }
